@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a focused improvement to the core or its documentation.
+title: "[feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project intentionally stays small. Please explain the user problem first, not only
+        the proposed API. Changes that add platform adapters, timers, or model providers are
+        usually out of scope for the core.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can't you do today, and why does it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest change that solves the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else did you try or consider?
+    validations:
+      required: false
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This belongs in the framework-agnostic core (not a platform adapter or timer).
+          required: true
+        - label: I searched existing issues and docs.
+          required: true

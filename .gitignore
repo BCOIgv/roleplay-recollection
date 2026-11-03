@@ -1,0 +1,14 @@
+node_modules/
+dist/
+reports/
+.verify/
+coverage/
+*.tgz
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+memory-state.json
+memory-writer.lock

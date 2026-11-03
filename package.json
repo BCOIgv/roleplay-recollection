@@ -1,0 +1,64 @@
+{
+  "name": "roleplay-recollection",
+  "version": "0.3.0",
+  "description": "A dependency-free recollection engine for AI roleplay and companion characters: source-backed episodes, time-based fading, cue recall, solitude, and optional later contact.",
+  "keywords": [
+    "ai-roleplay",
+    "roleplay-recollection",
+    "character-memory",
+    "companion",
+    "memory",
+    "roleplay",
+    "recollection",
+    "solitude",
+    "llm"
+  ],
+  "license": "MIT",
+  "author": "AI Roleplay Recollection contributors",
+  "type": "module",
+  "main": "./index.mjs",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "default": "./index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.mjs",
+    "index.d.ts",
+    "src/",
+    "docs/",
+    "examples/",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "verify": "node scripts/verify.mjs",
+    "release:check": "node scripts/release-check.mjs",
+    "configure": "node scripts/configure-repo.mjs",
+    "demo": "node examples/scenarios.mjs",
+    "demo:solitude": "node examples/solitude.mjs",
+    "demo:basic": "node examples/basic.mjs",
+    "prepack": "npm run verify",
+    "prepublishOnly": "npm run verify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BCOIgv/roleplay-recollection.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BCOIgv/roleplay-recollection/issues"
+  },
+  "homepage": "https://github.com/BCOIgv/roleplay-recollection#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

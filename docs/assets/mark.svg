@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="markTitle markDesc">
+  <title id="markTitle">朝花夕拾 · AI Roleplay Recollection</title>
+  <desc id="markDesc">A warm crescent moon with three falling petals.</desc>
+  <defs>
+    <linearGradient id="markInk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6e7c9"/>
+      <stop offset="1" stop-color="#e8b86d"/>
+    </linearGradient>
+    <radialGradient id="markHalo" cx="50%" cy="45%" r="52%">
+      <stop offset="0" stop-color="#e8b86d" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#e8b86d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="64" cy="64" r="61" fill="url(#markHalo)"/>
+  <path d="M70 22a42 42 0 1 0 0 84 34 34 0 1 1 0-84Z" fill="url(#markInk)" opacity="0.96"/>
+  <g fill="#e8b86d" opacity="0.9">
+    <ellipse cx="93" cy="38" rx="10" ry="4.5" transform="rotate(-32 93 38)"/>
+    <ellipse cx="100" cy="56" rx="7" ry="3.2" transform="rotate(-18 100 56)"/>
+    <ellipse cx="86" cy="22" rx="6" ry="2.6" transform="rotate(-48 86 22)"/>
+  </g>
+</svg>

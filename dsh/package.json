@@ -1,0 +1,53 @@
+{
+  "name": "roleplay-recollection-dsh",
+  "version": "0.3.0",
+  "description": "DSH bundle for roleplay-recollection: source-backed character recollection and recall tools.",
+  "license": "MIT",
+  "author": "AI Roleplay Recollection contributors",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "roleplay-recollection",
+    "mcp",
+    "memory",
+    "roleplay"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "roleplay-recollection": "^0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BCOIgv/roleplay-recollection.git",
+    "directory": "dsh"
+  },
+  "bugs": {
+    "url": "https://github.com/BCOIgv/roleplay-recollection/issues"
+  },
+  "homepage": "https://github.com/BCOIgv/roleplay-recollection/tree/main/dsh#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,8 @@
+- insert:
+    - id: roleplay-recollection
+      name: roleplay-recollection-dsh
+      config:
+        characterId: default
+        scopeId: default
+        mode: companion
+        stateDir: !!js dshHomePath('roleplay-recollection')

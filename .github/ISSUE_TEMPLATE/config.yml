@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/BCOIgv/roleplay-recollection#readme
+    about: Read the README, architecture, API, and verification notes first.
+  - name: Security report
+    url: https://github.com/BCOIgv/roleplay-recollection/security/advisories/new
+    about: Please report vulnerabilities privately, not as a public issue.

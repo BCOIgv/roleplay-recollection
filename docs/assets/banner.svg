@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="bannerTitle bannerDesc">
+  <title id="bannerTitle">朝花夕拾 · AI Roleplay Recollection</title>
+  <desc id="bannerDesc">A dusk gradient banner with a crescent moon, falling petals, the title 朝花夕拾, and the descriptor AI 角色扮演回忆核心.</desc>
+  <defs>
+    <linearGradient id="bannerBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1420"/>
+      <stop offset="0.55" stop-color="#1b2234"/>
+      <stop offset="1" stop-color="#2c1f2e"/>
+    </linearGradient>
+    <radialGradient id="bannerGlow" cx="18%" cy="38%" r="62%">
+      <stop offset="0" stop-color="#e8b86d" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#e8b86d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bannerInk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f8ecd4"/>
+      <stop offset="1" stop-color="#e8b86d"/>
+    </linearGradient>
+    <linearGradient id="bannerLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e8b86d" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#e8b86d" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="360" fill="url(#bannerBg)"/>
+  <rect width="1280" height="360" fill="url(#bannerGlow)"/>
+
+  <g fill="none" stroke="#e8b86d" stroke-opacity="0.08" stroke-width="1">
+    <circle cx="1120" cy="40" r="240"/>
+    <circle cx="1120" cy="40" r="190"/>
+    <circle cx="1120" cy="40" r="140"/>
+  </g>
+
+  <g fill="#e8b86d" opacity="0.32">
+    <ellipse cx="1090" cy="250" rx="16" ry="7" transform="rotate(-28 1090 250)"/>
+    <ellipse cx="1136" cy="286" rx="11" ry="5" transform="rotate(-16 1136 286)"/>
+    <ellipse cx="1036" cy="300" rx="9" ry="4" transform="rotate(-40 1036 300)"/>
+    <ellipse cx="1180" cy="196" rx="7" ry="3" transform="rotate(-24 1180 196)"/>
+  </g>
+
+  <g transform="translate(76,112)">
+    <circle cx="64" cy="64" r="61" fill="#e8b86d" opacity="0.06"/>
+    <path d="M70 22a42 42 0 1 0 0 84 34 34 0 1 1 0-84Z" fill="url(#bannerInk)" opacity="0.96"/>
+    <g fill="#e8b86d" opacity="0.9">
+      <ellipse cx="93" cy="38" rx="10" ry="4.5" transform="rotate(-32 93 38)"/>
+      <ellipse cx="100" cy="56" rx="7" ry="3.2" transform="rotate(-18 100 56)"/>
+      <ellipse cx="86" cy="22" rx="6" ry="2.6" transform="rotate(-48 86 22)"/>
+    </g>
+  </g>
+
+  <text x="252" y="160" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="94" font-weight="600" letter-spacing="10" fill="url(#bannerInk)">朝花夕拾</text>
+  <text x="258" y="208" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="19" letter-spacing="12" fill="#cdb892">AI ROLEPLAY RECOLLECTION</text>
+
+  <rect x="258" y="238" width="360" height="1" fill="url(#bannerLine)"/>
+  <text x="258" y="282" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="24" fill="#aeb6c4">AI 角色扮演回忆核心</text>
+  <text x="258" y="314" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="14" letter-spacing="2" fill="#6f7a8c">A RECOLLECTION ENGINE FOR AI ROLEPLAY</text>
+</svg>

@@ -1,191 +1,63 @@
 # 发布清单
 
-> 目标：从本地干净仓库推到 GitHub，并可选发布到 npm。
-> 当前工作区的 `roleplay-recollection` 已完成 `git init`、初始提交与 `v0.3.0` tag；若沿用这份历史，可从第 4 步开始。
-> 当前包名 `roleplay-recollection` 在 2026-11-03 检查时 npm 与 GitHub 均可用；发布前请再复核一次。
+## 当前状态
 
-## 0. 前置
+截至 2026-11-04（上海时间）：
 
-- Node.js ≥ 22。
-- 已安装 Git；建议也安装 GitHub CLI（可选）。
-- 已注册 GitHub 账号；如果要发 npm，已登录 `npm login`。
-- 确定仓库归属：个人账号或组织。下文用 `<owner>` 表示。
+- [GitHub v0.3.0](https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0) 已发布；标签及 `main` 对应 `c4e7b44db1a208fc4c6dde754415f6813d7a7977`。
+- Release 提供核心包、DSH 包及各自的 SHA-256 文件。
+- 公共 npm registry 对两个包名均返回 404，不能使用包名安装，也不能仅安装 DSH tarball 后期待 registry 自动提供核心依赖。
+- 已发现的代码与产物缺口见 [验证说明](verification.md)。下一次发布前应修复并补足回归。
 
-## 1. 配置仓库归属
+## 版本与元数据
 
-```powershell
-npm run configure -- <owner>
-```
+从干净、已审阅的源码提交准备新版本，不改写已发布的 `v0.3.0` 标签或原产物。
 
-该命令会把仓库内所有 `BCOIgv` 占位替换为 `<owner>`，包括：
+1. 同步核心和 DSH 的 `package.json.version`、`src/policy.mjs` 的 `VERSION`、类型文件版本说明及版本化文档。
+2. 同步 DSH 的核心依赖范围。当前 `^0.3.0` 接受兼容的 `0.3.x`；若需要只消费精确版本，应改用精确依赖。
+3. 将 `CHANGELOG.md` 的 Unreleased 内容转为新版本记录，写明日期、修复和兼容性影响。
+4. 确认 `main`、`exports`、`types`、`files`、Node 要求、许可证与仓库链接均正确。
+5. DSH 独立产物必须包含许可证正文，并记录已验证的宿主版本和工具接口。
 
-- `package.json` 的 `repository` / `bugs` / `homepage`；
-- README 的 CI 徽章链接；
-- 本文档中的示例。
+仓库归属已配置为 `BCOIgv`。`npm run configure -- <owner>` 只替换字面量 `OWNER`；当前仓库没有该占位符。Fork 改名需明确修改两份包元数据、文档链接、徽章与 remote，然后检查差异。
 
-替换后检查：
+## 验证与打包
 
-```powershell
-git diff
-```
+在源码仓库根目录运行：
 
-如果不想用脚本，也可以手动替换上述文件中的 `BCOIgv`。
-
-## 2. 发布前检查
-
-```powershell
-node --version                 # 应 >= v22
-npm run verify                 # 语法 + 56 项测试 + 三个示例
-npm run release:check          # 元数据、文件、敏感信息、占位符
-npm pack --dry-run             # 查看实际会打进 tarball 的文件
-```
-
-`release:check` 应输出 `"ok": true`。它会检查：
-
-- 必填文件齐全（README、LICENSE、CHANGELOG、CONTRIBUTING、SECURITY、CI、docs 等）；
-- `package.json` 不是 `private`、许可证为 MIT、`exports` 有 types；
-- `src/policy.mjs` 的 `VERSION` 与 `package.json` 一致；
-- 没有绝对个人路径、API Key、GitHub Token、私钥、个人用户名；
-- `repository` 不再包含 `BCOIgv`。
-
-`npm pack --dry-run` 不应包含 `test/`、`reports/`、`archive/`、`migration/`、`.env`、`memory-state.json`、`*.tgz`。
-
-## 3. 初始化 Git
-
-```powershell
-git init -b main
-git add .
-git status                     # 确认没有 .env / memory-state.json / dist / reports
-git -c user.name="<你的名字>" -c user.email="<你的邮箱>" commit -m "chore: initial public release v0.3.0"
-git tag -a v0.3.0 -m "AI Roleplay Recollection 0.3.0"
-```
-
-> 如果本机已配置 `user.name` / `user.email`，可以省略 `-c` 参数。
-> 建议使用 GitHub 的 noreply 邮箱，避免公开私人邮箱。
-
-## 4. 创建 GitHub 仓库
-
-在 GitHub 上新建仓库：
-
-- Owner：`<owner>`
-- Repository name：`roleplay-recollection`
-- 可见性：Public
-- **不要**勾选 README、.gitignore、LICENSE（本地已有）
-
-然后：
-
-```powershell
-git remote add origin https://github.com/<owner>/roleplay-recollection.git
-git push -u origin main --tags
-```
-
-如果使用 SSH：
-
-```powershell
-git remote add origin git@github.com:<owner>/roleplay-recollection.git
-git push -u origin main --tags
-```
-
-## 5. GitHub 仓库设置
-
-- **Description**：`A dependency-free recollection engine for AI roleplay and companion characters: source-backed episodes, time-based fading, cue recall, solitude, and optional later contact.`
-- **Topics**：`ai-roleplay`、`roleplay-recollection`、`character-memory`、`companion`、`memory`、`recollection`、`solitude`、`nodejs`
-- **Social preview**：上传 `docs/assets/social-preview-recollection.png`（1280×640）
-- **Issues**：启用；模板已放在 `.github/ISSUE_TEMPLATE/`
-- **Discussions**：可选
-- **Pages**：可选；本仓库没有需要托管的站点
-- **Security**：启用 Private vulnerability reporting
-
-## 6. 创建 Release
-
-1. GitHub → Releases → Draft a new release；
-2. Tag：`v0.3.0`；Target：`main`；
-3. Title：`AI Roleplay Recollection 0.3.0`；
-4. 说明从 `CHANGELOG.md` 的 `[0.3.0]` 段复制；
-5. 附加资产：
-
-```powershell
-npm pack
-# 生成 roleplay-recollection-0.3.0.tgz
-```
-
-把 `roleplay-recollection-0.3.0.tgz` 上传到 Release；
-6. 发布为 latest。
-
-## 7. 可选：发布到 npm
-
-```powershell
-npm login
-npm publish --access public
-npm view roleplay-recollection version
-```
-
-说明：
-
-- `prepublishOnly` 会再跑一次 `npm run verify`；
-- 如果包名已被占用，改 `package.json` 的 `name`，并同步 README/文档；
-- 首次发布后，npm 页面会自动读取 README；
-- 不建议在 72 小时后 `npm unpublish`；优先用 `npm deprecate` 标记版本。
-
-### DSH 子包 `roleplay-recollection-dsh`
-
-核心包发布后，再发布 DSH Bundle：
-
-```powershell
-cd dsh
-npm install
+```bash
+npm run verify
+npm run release:check
 npm pack --dry-run
-npm publish --access public
-npm view roleplay-recollection-dsh version
+npm pack ./dsh --dry-run
 ```
 
-说明：
+当前 `release:check` 检查必要文件、部分元数据、核心/DSH 版本关系和敏感文本。它不检查 changelog 版本、tag、入口目标存在性、实际 tarball、TypeScript 或 DSH 宿主。`prepack` / `prepublishOnly` 也只运行 `verify`；发布负责人须单独执行完整验收。
 
-- `dsh/package.json` 依赖 `roleplay-recollection@^0.3.0`，所以必须先发核心包；
-- 本地开发时可在 `dsh/` 下先安装核心 tarball：`npm install ..\dist\roleplay-recollection-0.3.0.tgz --no-save`；
-- 发布后确认 tarball 包含 `index.js`、`cordis.patch.yml`、`locale/*.json`、`icon.svg`；
-- DSH 插件管理器安装 `roleplay-recollection-dsh` 后即可使用 `roleplay_recollection_*` 工具。
-
-## 8. 发布后验证
-
-在一个空目录安装 tarball 并跑最小导入：
+生成两个包并保存 SHA-256（PowerShell）：
 
 ```powershell
-mkdir smoke-test
-cd smoke-test
-npm init -y
-npm install ..\roleplay-recollection-0.3.0.tgz
-node -e "import('roleplay-recollection').then(m => console.log(m.VERSION, typeof m.CompanionMemory))"
+New-Item -ItemType Directory -Force dist | Out-Null
+npm pack --pack-destination dist
+npm pack ./dsh --pack-destination dist
+Get-FileHash dist/*.tgz -Algorithm SHA256
 ```
 
-应输出类似：
+审核实际文件清单：
 
-```text
-0.3.0 function
-```
+- 核心必须包含入口、声明、`src/`、README、LICENSE、CHANGELOG。
+- DSH 必须包含入口、`cordis.patch.yml`、locale、图标、README 和 LICENSE。
+- 不包含状态文件、凭据、缓存、测试临时文件、历史归档或嵌套 tarball。
+- 文档链接需在包内成立，或明确指向仓库网页；社交预览图无需进入运行时包。
 
-再确认：
+在独立空目录建立消费端，同时安装这次生成的两个 tarball。验证核心导入/捕获/查询，DSH 显式及缺省配置、工具注册/卸载、配置 patch、实际宿主工具调用；再使用受支持的 TypeScript 版本编译消费端示例。核心零依赖不要求凭空增加 lockfile；引入开发依赖后应提交 lockfile 并使用 `npm ci`。
 
-- GitHub Actions 的 CI 为绿色；
-- README 首屏 banner、徽章、Mermaid 图正常渲染；
-- Release 资产可下载；
-- `npm view roleplay-recollection` 的 license/repository 正确。
+## 发布和复核
 
-## 9. 回滚
+通过验收后，为已审阅提交创建新版本标签。先发布核心包，再发布 DSH 包；如只发布 GitHub，应在安装说明中提供同时安装本地两个 tarball 的方式。
 
-- **GitHub**：删除 Release 与 tag，或 revert 提交后重新打 tag。
-- **npm**：`npm deprecate roleplay-recollection@0.3.0 "reason"`；72 小时内确需撤回才 `npm unpublish roleplay-recollection@0.3.0`。
-- **本地**：`archive/2026-11-03-prepublic-0.3.0/` 保存了发布前完整快照（含哈希清单），可用于对照恢复。
+发布到 npm 时，应发布经过验收的同一 tarball，避免重新打包出不同内容。发布后确认两包版本、核心依赖解析及真实消费端安装；GitHub Release 附上同一批 tarball、SHA-256 和对应 changelog。发布动作本身不替代验收。
 
-## 10. 发布检查表
+开发预览状态应在 Release 正文明确说明；是否勾选 GitHub prerelease、使用 npm `next` 标签，应与对外稳定性承诺一致。版本为 `0.x` 不会自动设置这些发布渠道标志。
 
-- [ ] 已运行 `npm run configure -- <owner>`
-- [ ] `npm run verify` 通过（56 项）
-- [ ] `npm run release:check` 输出 `ok: true`
-- [ ] `npm pack --dry-run` 文件列表干净
-- [ ] `git status` 无 `.env`、`memory-state.json`、`dist/`、`reports/`
-- [ ] 已创建 `main` 分支与 `v0.3.0` tag
-- [ ] GitHub 仓库为 Public，描述/topics/social preview 已设置
-- [ ] Release 已附加 tarball
-- [ ] （可选）npm 发布成功并用 tarball 做过安装冒烟
-- [ ] CI 绿色
+如发现问题，发布新的修复版本并说明受影响范围；不要将旧标签移动到新代码。npm 撤回或弃用按[官方当前政策](https://docs.npmjs.com/policies/unpublish)处理，不把固定时限视为无条件撤回许可。

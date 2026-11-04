@@ -55,7 +55,7 @@ const memory = new CompanionMemory({
 | `dailyModelCalls` | 2 | 1–8 | 每日模型调用上限；线索与独处共享 |
 | `modelTimeoutMs` | 30000 | 50–60000 | 单次模型调用超时 |
 | `maxOutputTokens` | 500 | 64–800 | 单次模型输出上限 |
-| `expressionIntervalHours` | 48 | 1–168 | 两次表达/联系的最短间隔 |
+| `expressionIntervalHours` | 48 | 1–168 | 线索表达按提出时间计冷却；独处联系按回执计冷却 |
 | `sameMemoryExpressionDays` | 7 | 1–60 | 同一段旧事重复作为开场的间隔 |
 | `maxEpisodes` | 200 | 1–500 | 经历容量 |
 | `maxThoughts` | 100 | 1–200 | 私人想法容量 |
@@ -70,7 +70,7 @@ const memory = new CompanionMemory({
 | `solitudeMinutes` | 10 | 1–10 | 单次独处时限 |
 | `unansweredContactHours` | 72 | 1–336 | 未回应时的联系冷却 |
 
-配置在构造时校验并冻结；非法值会抛出 `Error`。
+配置在构造时校验并冻结；非法值会抛出 `Error`。计数及小时/分钟等整数参数不接受小数；必须满足 `0 < dormantThreshold < detailThreshold < 1`。0.3.0 的构造参数 `storyId` 必须省略或为字符串，显式 `null` 会抛错，尽管当前类型声明允许它。
 
 ## 3. 模型钩子
 
@@ -147,7 +147,7 @@ const result = memory.capture({
   - 剧情：`story_event`
 - `tags` 最多 8 个；`importance` / `emotionalWeight` 为 0–1。
 - `retention: 'explicitly_retained'` 可跳过显著性过滤，需提供 `retentionReason`。
-- 相同 `sourceKey` 不会因换 ID 重复入库。
+- `sourceKey` 对整组证据的 kind/id/text 排序后哈希；仅完整证据组相同才按同一来源处理。增减证据或修改摘录可绕过去重，宿主应维护稳定来源身份。
 
 ### `revise(id, expectedRevision, raw)`
 
@@ -161,7 +161,7 @@ const revised = memory.revise('rain-and-whale', currentRevision, {...raw, gist: 
 
 ### `forget(id)`
 
-撤回一段经历：状态改为 `withdrawn`，删除关联想法/表达；返回 `{forgotten, id?}`。撤回后同一 ID 不能重新入库，同一来源也会被识别为 `withdrawn_source`。
+撤回一段经历：状态改为 `withdrawn`，删除关联想法/表达；返回 `{forgotten, id?}`。撤回后保留 ID、revision、sourceKey 墓碑。同一 ID 不能重新入库，完整证据组哈希相同才会被识别为 `withdrawn_source`；墓碑仍占用经历容量。
 
 ### `setSourceAvailable(id, available)`
 
@@ -204,8 +204,8 @@ const result = await memory.recollect({
 ```
 
 - `trigger:'cue'`：一次线索回想，最多 1 次模型调用。
-- `trigger:'idle'`：转到 `solitude()`，不在这里立即消耗一次回想。
-- `opportunityId` 必填；同一 ID 只处理一次。
+- `trigger:'idle'`：转到 `solitude()`，返回 `SolitudeResult`。0.3.0 的类型声明遗漏此分支。
+- cue 路径的 `opportunityId` 必填；去重依赖最近保留的运行记录，并非永久 ID 注册表。idle 路径使用独处计划，不要求此字段。
 - `busy` / `userAwaitingReply` 时返回 `skipped`。
 - 未配置 `reflect` 时返回 `{status:'recalled', memory, expression:null, modelCalls:0}`。
 - 返回值可能是：
@@ -233,7 +233,7 @@ const result = await memory.solitude({
 取出一个表达候选：
 
 - 普通表达：要求 `allowExpression:true`，且不忙、用户不在等回复；成功后状态变为 `consumed`。
-- 独处联系：要求 `allowExpression:true`、无待处理工作；非 `delivery:'reply'` 时还要求空闲和时间窗。成功后状态变为 `taken`，并返回 `{...candidate, sent:false, purpose:'optional_character_expression'}`。
+- 独处联系：要求 `allowExpression:true`、无待处理工作；回复取用还必须同时提供 `delivery:'reply'` 和非空 `replyToMessageId`，否则按主动联系检查空闲和时间窗。成功后状态变为 `taken`，并返回 `{...candidate, sent:false, purpose:'optional_character_expression'}`。
 - 不满足条件、已过期或来源 detail 变化时返回 `null`。
 
 ### `settleExpression(id, {outcome, receipt})`
@@ -251,7 +251,7 @@ memory.settleExpression(id, {outcome: 'sent', receipt: 'platform-message-123'});
 | `not_sent` | 确认未发送 |
 | `unknown` | 结果未知；不重发，阻止新的主动投递，待核实 |
 
-返回 `{id, status, sent?}`。对已结算的同一结果幂等。
+返回 `{id, status, sent?}`。同一 outcome 和 receipt 重复结算幂等。当前来源修订、撤回或失效会删除未决意愿，导致晚到回执无法结算；宿主需保留独立投递记录。
 
 ### `close()`
 
@@ -319,40 +319,14 @@ memory.settleExpression(id, {outcome: 'sent', receipt: 'platform-message-123'});
 
 - 传入 `stateDir` 后，状态写入 `<stateDir>/memory-state.json`。
 - 状态版本 2；兼容 0.2.0 的经历、想法和调用计数，首次加入独处计划。
-- 写入使用临时文件 + `rename`，文件权限 `0600`，目录 `0700`；单文件上限约 2.5 MB。
-- 写入锁为 `memory-writer.lock`；PID 已消失的过期锁会回收，存活写入者的锁会拒绝并抛错。
+- 写入使用临时文件 + `rename`；写入上限 2.5 MiB，读取上限 3 MiB。创建时请求 POSIX 文件权限 `0600`、目录 `0700`；已有目录及 Windows ACL 由宿主配置。
+- `memory-writer.lock` 检查 PID，但创建锁到写入 PID 存在竞争窗口；0.3.0 不应依赖多进程写入安全。
+- 淡化只影响可见视图，不自动删除磁盘原文；撤回会移除对应文本并保留去重墓碑。
 - 核心不访问网络，也不写任何其他位置。
 
-## 8. 最小示例
+可运行示例见 [`examples/`](../examples/)。
 
-```js
-import {CompanionMemory} from 'roleplay-recollection';
-
-const memory = new CompanionMemory({
-  characterId: 'xiaomiao',
-  scopeId: 'private:owner',
-  mode: 'companion',
-}, {
-  reflect: async ({input}) => ({
-    value: {action: 'silence'},
-  }),
-});
-
-memory.capture({
-  id: 'first-rain',
-  truth: 'observed',
-  occurredAt: Date.now() - 86400000,
-  gist: '第一次一起听雨',
-  evidence: [{id: 'chat-1', kind: 'shared_event', text: '那天窗外下着雨。'}],
-}, {mode: 'companion'});
-
-console.log(memory.visible({mode: 'companion', trigger: 'cue', cue: '下雨'}));
-await memory.close();
-```
-
-更多可运行示例见 [`examples/`](../examples/)。
-
-## 9. 版本与兼容
+## 8. 版本与兼容
 
 - 当前公开版本为 `0.3.0`，属于 developer preview；API 在 1.0 前可能小幅调整。
 - `status().version` 与 `VERSION` 导出一致；发布检查会校验它们与 `package.json` 相同。

@@ -1,140 +1,116 @@
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="AI Roleplay Recollection · 朝花夕拾" width="100%">
+</p>
+
 # AI Roleplay Recollection
 
-> Chinese name: 朝花夕拾.
+A modular recollection engine for AI roleplay and conversational companion agents. Stores discrete source-backed episodes, applies time-based detail degradation, and provides cue recall with controlled, low-frequency wandering.
 
-A dependency-free recollection engine for AI roleplay and companion characters: fading
-recollections, unstructured solitude, and optional later contact.
+The core manages state and generates candidates; conversation orchestration, model execution, and message delivery remain the responsibility of the host application.
 
-[中文 README](README.md) · [Architecture](docs/architecture.md) · [API](docs/api.md)
+[中文](README.md) · [API](docs/api.md) · [Architecture](docs/architecture.md) · [DSH Bundle](dsh/README.md) · [Changelog](CHANGELOG.md)
 
-## What it is
+[![CI](https://github.com/BCOIgv/roleplay-recollection/actions/workflows/ci.yml/badge.svg)](https://github.com/BCOIgv/roleplay-recollection/actions/workflows/ci.yml)
+[![Node](https://img.shields.io/badge/node-%3E%3D22-3c873a)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-AI Roleplay Recollection treats **experiences**, not documents, as the unit of recollection:
+---
 
-- capture source-backed moments with `observed / reported / fictional` truth labels;
-- let ordinary details fade from specifics to impressions, then out of daily recall;
-- look up a few related memories for a normal reply **without an extra model call**;
-- allow a private, unstructured moment where the character may wander, linger, or leave;
-- keep any “I want to tell you something” as a candidate that the host must actually send
-  and reconcile with a real receipt.
+## Core Mechanisms
 
-It is framework-agnostic. The host owns conversation, model access, timing, and delivery.
+- **Source-Backed Episodes**  
+  Captures discrete interaction fragments (timestamp, summary gist, 1–3 raw excerpts, tags, and truth labels: `observed / reported / fictional`). Deduplication relies on full-evidence group hashing; supports revisions and withdrawals.
+- **Progressive Detail Degradation**  
+  Ordinary episodes fade over time unless explicitly retained: detailed quotes degrade into summary impressions, eventually becoming dormant from daily recall. Original excerpts remain in local storage, but the view layer stops exposing verbatim text to the model.
+- **Zero-Extra-Call Retrieval**  
+  Routine dialogue turns query `visible()` with lexical and tag filtering, adding no model calls.
+- **Controlled Wandering (Solitude)**  
+  When quiet conditions are satisfied (72–120 h intervals, minimum inactivity threshold, active time window), the agent enters a low-step recollection walk. Leaving quietly is valid; if a contact candidate is produced, cooldown is settled only after the host returns an actual delivery receipt.
 
-## What it is not
+---
 
-- Not a knowledge base, RAG index, reading app, or book-shelf;
-- not a messaging bot: it never sends by itself;
-- not a model provider: the host injects `reflect` / `wander`;
-- not a full persona/relationship simulation;
-- not a scheduler: the host decides when to call `solitude()`.
+## Scope and Boundaries
 
-## Features
-
-| Feature | Behavior |
+| Dimension | Specification |
 | --- | --- |
-| Source-backed episodes | 1–3 evidence excerpts, revision, withdrawal, source availability |
-| Time-based fading | specific → impression → dormant; explicit retention excepted |
-| Zero-extra-call lookup | `visible()` returns materials for an existing reply |
-| Cue recall | optional one model call, with anchor/revision validation |
-| Solitude | persisted 72–120 h opportunity; up to 2 steps; leave/linger/follow/switch |
-| Later contact | intent only after solitude; 24 h expiry; receipt-based cooldown |
-| Isolation | companion vs roleplay story, character and scope are separate |
-| Persistence | atomic `memory-state.json`, `0600` file / `0700` directory, stale-lock recovery |
+| **Scheduling** | No background daemon or internal timers; execution timing is fully host-driven |
+| **Model Access** | Host injects `reflect` / `wander` runners; core holds no vendor SDKs or API keys |
+| **Message Delivery** | Core outputs candidates only (`sent: false`); host handles platform transmission |
+| **Data Isolation** | Instance-level isolation; characters, scopes, and stories must use distinct instances and state directories |
 
-## Quick start
+---
 
-Requires Node.js ≥ 22. No runtime dependencies.
+## Installation & Quick Start
+
+Requires Node.js ≥ 22, pure ESM, no runtime dependencies. Version `0.3.0` is a developer preview.
+
+As of 2026-11-04, both packages are available through [GitHub Release v0.3.0](https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0), but neither is available in the public npm registry. Install the core from the release:
 
 ```bash
-npm install roleplay-recollection
+npm install https://github.com/BCOIgv/roleplay-recollection/releases/download/v0.3.0/roleplay-recollection-0.3.0.tgz
 ```
 
 ```js
-import {CompanionMemory} from 'roleplay-recollection';
+import { CompanionMemory } from 'roleplay-recollection';
 
 const memory = new CompanionMemory({
-  characterId: 'xiaomiao',
-  scopeId: 'private:owner',
+  characterId: 'character_a',
+  scopeId: 'private:user_01',
   mode: 'companion',
-}, {
-  reflect: async () => ({value: {action: 'silence'}}),
-  wander: async () => ({value: {action: 'leave'}}),
+  stateDir: './data/memory_a', // omitted for in-memory only
 });
 
+// Capture an episode
 memory.capture({
-  id: 'first-rain',
+  id: 'ev-20261104-01',
   truth: 'observed',
-  occurredAt: Date.now() - 86400000,
-  gist: 'The first time we listened to the rain together.',
-  evidence: [{id: 'chat-1', kind: 'shared_event', text: 'It was raining outside.'}],
-}, {mode: 'companion'});
+  occurredAt: Date.now() - 3600000,
+  gist: 'Read documents together during rain and spoke briefly',
+  tags: ['rain', 'reading'],
+  evidence: [{ id: 'msg-1', kind: 'shared_event', text: 'Rain intensified outside while looking through old books.' }],
+}, { mode: 'companion' });
 
-console.log(memory.visible({mode: 'companion', trigger: 'cue', cue: 'rain'}));
+// Query visible memories (zero extra model calls)
+const context = memory.visible({
+  mode: 'companion',
+  trigger: 'cue',
+  cue: 'books',
+});
+
 await memory.close();
 ```
 
-## DSH plugin
+---
 
-`dsh/` contains **`roleplay-recollection-dsh`**, a DSH Bundle that registers the core as Agent-callable `roleplay_recollection_*` tools (capture, visible lookup, cue recall, revise, withdraw, candidate management).
+## API Summary
 
-- Install, config, and tool list: [`dsh/README.md`](dsh/README.md)
-- Publish `roleplay-recollection` first, then `roleplay-recollection-dsh`
-- The bundle has no model adapter yet: `roleplay_recollection_visible` stays zero-model; `roleplay_recollection_recollect` returns a visible memory without producing thoughts or expressions
+| API | Behavior | Extra model calls |
+| --- | --- | --- |
+| `capture` / `revise` / `forget` | Store, correct, or withdraw episodes | 0 |
+| `visible` / `privateThoughts` | Supply material for an existing reply | 0 |
+| `recollect({trigger:'cue'})` | Cue lookup, optional reflection | 0 or 1 |
+| `solitude` / idle recollection | Wander when due and quiet; leaving is valid | Up to 2 by default |
+| `takeExpression` / `settleExpression` | Take candidates and reconcile solitude contact | 0 |
 
-AstrBot is a Python plugin system and is not included in this package.
+---
 
-## Architecture
+## DSH Bundle
 
-```mermaid
-flowchart LR
-  Host["Host: chat / model / delivery"] -->|capture · visible · recollect · solitude| Core["CompanionMemory"]
-  Core --> Memory["memory.mjs"]
-  Core --> Policy["policy.mjs"]
-  Core --> Solitude["solitude.mjs"]
-  Core --> Store["store.mjs"]
-  Core --> Model["model.mjs"]
-  Core -->|MemoryView / candidates| Host
-```
+`roleplay-recollection-dsh` provides a separate DSH Bundle exposing 11 `roleplay_recollection_*` tools; see the [bundle documentation](https://github.com/BCOIgv/roleplay-recollection/tree/main/dsh#readme). The bundle does not bundle a model executor and requires the host to configure session isolation.
 
-| Module | Responsibility |
-| --- | --- |
-| `src/core.mjs` | public entry and orchestration |
-| `src/memory.mjs` | episode normalization, fading views, candidates, wander sampling |
-| `src/policy.mjs` | config validation, situation rules, prompts, output validation |
-| `src/solitude.mjs` | opportunity scheduling, wander loop, contact intents |
-| `src/store.mjs` | state validation, writer lock, atomic writes |
-| `src/model.mjs` | shared timeout/abort boundary for model hooks |
+---
 
-## Model call budget
+## Status and Limitations
 
-| Path | Calls |
-| --- | --- |
-| `capture` / `revise` / `forget` / `pause` / `status` | 0 |
-| `visible` / `privateThoughts` | 0 |
-| `recollect({trigger:'cue'})` | 0 or 1 |
-| `recollect({trigger:'idle'})` / `solitude()` | 0 to `maxWanderSteps` (2 by default) |
-| `takeExpression` / `settleExpression` | 0 |
+56 offline tests pass; does not certify real-world conversational naturalness or production platform delivery; see [verification notes](docs/verification.md).
 
-The daily budget is 2 by default and shared by cue recall and solitude; failed attempts count.
+State is unencrypted. Current lock recovery semantics recommend a single writer process per state directory. See [security notes](https://github.com/BCOIgv/roleplay-recollection/blob/main/SECURITY.md).
 
-## Status
+---
 
-- **0.3.0 developer preview**; API may change before 1.0.
-- **56 offline checks pass**: 35 core regressions + 19 solitude checks + 2 store-lock tests.
-- Not yet verified: real-model naturalness, platform delivery (QQ/DSH), long-running
-  stability.
-- No network, no messages, no timers, no runtime dependencies.
+## Documentation & License
 
-## Documentation
-
-- [Architecture](docs/architecture.md)
-- [Solitude design](docs/solitude.md)
-- [API reference](docs/api.md)
-- [Verification](docs/verification.md)
-- [Naming](docs/naming.md)
-- [Releasing](docs/releasing.md)
-- [Changelog](CHANGELOG.md)
-
-## License
+- [API Reference](docs/api.md) · [Architecture](docs/architecture.md) · [Solitude Design](docs/solitude.md) · [Releasing](docs/releasing.md) · [Changelog](CHANGELOG.md)
+- Chinese name: 朝花夕拾 (*Dawn Blossoms Plucked at Dusk*); repository and package name: `roleplay-recollection`.
 
 [MIT](LICENSE) © 2026 AI Roleplay Recollection contributors

@@ -18,6 +18,8 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Retry bounded Windows EPERM/EACCES/EBUSY failures while creating or removing the writer guard; preserve permanent failures and execute the transaction only once.
+
 - Writer-lock initialization/reclamation race; unknown locks now fail closed.
 - Source changes retain minimal taken/unknown delivery records while erasing their text.
 - Stable evidence identity prevents edited-excerpt recapture for newly captured records.

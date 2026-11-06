@@ -6,7 +6,7 @@
 
 | 项目 | 本地结果与边界 |
 | --- | --- |
-| `npm run verify` | Windows、Node 24.19.0；79 项测试、四个合成示例、语法检查通过 |
+| `npm run verify` | Windows、Node 24.19.0；83 项测试、四个合成示例、语法检查通过 |
 | `npm run check:types` | TypeScript 严格消费端编译通过 |
 | `npm run verify:consumer` | 核心和 DSH 两个实际 tarball 离线安装通过；旧默认配置、全局 9 个工具、权限拒绝、回想—取用—结算及卸载通过 |
 | `npm run release:check` | 当前文件与元数据检查通过 |

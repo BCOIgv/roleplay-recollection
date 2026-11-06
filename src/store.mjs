@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {retryWindowsFileOperation} from './fs-retry.mjs';
 
 const MAX_STATE_BYTES = 3 * 1024 * 1024;
 const MAX_WRITE_BYTES = 2.5 * 1024 * 1024;
@@ -128,14 +129,14 @@ export class MemoryStore {
     const guard = this.lock + '.guard';
     const deadline = Date.now() + 250;
     while (true) {
-      try { fs.mkdirSync(guard, {mode: 0o700}); break; }
+      try { retryWindowsFileOperation(() => fs.mkdirSync(guard, {mode: 0o700})); break; }
       catch (error) {
         if (error.code !== 'EEXIST') throw error;
         if (Date.now() >= deadline) throw new Error('Writer guard busy; after a crash, verify all writers stopped before manual recovery');
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2);
       }
     }
-    try { return fn(); } finally { fs.rmdirSync(guard); }
+    try { return fn(); } finally { retryWindowsFileOperation(() => fs.rmdirSync(guard)); }
   }
 
   reclaimStaleLock() {

@@ -106,7 +106,7 @@ await memory.close();
 
 ## 验证与限制
 
-当前源码的 79 项离线测试和四个示例通过，包含只读来源、全局 RP、来源失效、权限过滤及并发写入回归；类型编译和双包安装冒烟也已验证。真实模型、生产 DSH 和长期运行尚未验收。当前验证结果与 0.3.0 历史记录见 [验证说明](docs/verification.md)。
+当前源码的 83 项离线测试和四个示例通过，包含只读来源、全局 RP、来源失效、权限过滤及并发写入回归；类型编译和双包安装冒烟也已验证。真实模型、生产 DSH 和长期运行尚未验收。当前验证结果与 0.3.0 历史记录见 [验证说明](docs/verification.md)。
 
 状态文件未加密。创建文件/目录时请求 POSIX `0600` / `0700`；已有目录权限及 Windows ACL 需由宿主配置，见 [安全说明](https://github.com/BCOIgv/roleplay-recollection/blob/main/SECURITY.md)。
 

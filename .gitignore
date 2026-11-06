@@ -12,3 +12,6 @@ Thumbs.db
 !.env.example
 memory-state.json
 memory-writer.lock
+
+memory-writer.lock.guard/
+memory-sources.json

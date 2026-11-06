@@ -42,7 +42,7 @@
 
 ## 安装与快速使用
 
-环境要求：Node.js ≥ 22，纯 ESM，无运行时依赖。`0.3.0` 为开发预览版。
+当前源码环境要求：Node.js ≥ 22.16，纯 ESM，无运行时依赖。`0.3.0` 为开发预览版。
 
 截至 2026-11-04，已发布 [GitHub Release v0.3.0](https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0)，两个包尚未在公共 npm registry 提供。当前安装核心包：
 
@@ -96,6 +96,8 @@ await memory.close();
 
 ## DSH 接入
 
+当前源码新增全局模式：只读接入 JSON/JSONL/SQLite，自动验证映射，并以管理员全局范围驱动 RP 回想和独处。宿主提供可信身份与模型服务，见 [完整接入说明](docs/read-only-sources.md)。以下为公开 0.3.0 的旧局部模式。
+
 `roleplay-recollection-dsh` 是单独的 Bundle，依赖核心包并注册 11 个 `roleplay_recollection_*` 工具。安装与配置见 [DSH 说明](https://github.com/BCOIgv/roleplay-recollection/tree/main/dsh#readme)。
 
 当前 Bundle 不注入模型适配器，也不暴露 `solitude()`；线索回想只返回可见记忆。它不自动绑定调用者或聊天范围，不负责投递。生产接入需由宿主完成会话隔离及工具权限控制。
@@ -104,13 +106,15 @@ await memory.close();
 
 ## 验证与限制
 
-现有 56 项离线测试及三个示例通过，覆盖核心行为、独处和基础存储锁；这不代表真实模型、DSH 宿主、平台投递或并发稳定性已经验收。已知缺口及验证范围见 [验证说明](docs/verification.md)。
+当前源码的 79 项离线测试和四个示例通过，包含只读来源、全局 RP、来源失效、权限过滤及并发写入回归；类型编译和双包安装冒烟也已验证。真实模型、生产 DSH 和长期运行尚未验收。当前验证结果与 0.3.0 历史记录见 [验证说明](docs/verification.md)。
 
 状态文件未加密。创建文件/目录时请求 POSIX `0600` / `0700`；已有目录权限及 Windows ACL 需由宿主配置，见 [安全说明](https://github.com/BCOIgv/roleplay-recollection/blob/main/SECURITY.md)。
 
 ---
 
 ## 文档与协议
+
+- 未发布增强：[只读来源、自动适配与全局 RP](docs/read-only-sources.md)。当前源码新增，尚未进入 0.3.0 发布包。
 
 - [API 参考](docs/api.md) · [架构设计](docs/architecture.md) · [独处设计](docs/solitude.md) · [发布清单](docs/releasing.md) · [贡献指南](CONTRIBUTING.md)
 - 中文名「朝花夕拾」借用鲁迅散文集书名，借指对往事的淡化与回溯；对外统一标识为 `roleplay-recollection`。

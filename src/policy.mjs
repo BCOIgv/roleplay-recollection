@@ -49,7 +49,7 @@ export function configure(input) {
   const cfg = {...DEFAULTS, ...input};
   cfg.characterId = text(input.characterId, 100, 'characterId');
   cfg.scopeId = text(input.scopeId, 100, 'scopeId');
-  cfg.storyId = input.storyId === undefined ? null : text(input.storyId, 100, 'storyId');
+  cfg.storyId = input.storyId == null ? null : text(input.storyId, 100, 'storyId');
   cfg.persona = text(input.persona ?? '', 1200, 'persona', {empty: true});
   if (!['companion', 'roleplay'].includes(input.mode)) throw new Error('Core mode must be companion or roleplay');
   if (input.mode === 'roleplay' && !cfg.storyId || input.mode === 'companion' && cfg.storyId) throw new Error('Roleplay requires an independent storyId; companion memories have no storyId');

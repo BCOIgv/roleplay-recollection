@@ -1,5 +1,34 @@
 # 验证说明
 
+## 当前源码验证（2026-11-06）
+
+当前分支包含尚未发布的全局记忆增强；公开 v0.3.0 资产没有这些改动。
+
+| 项目 | 本地结果与边界 |
+| --- | --- |
+| `npm run verify` | Windows、Node 24.19.0；79 项测试、四个合成示例、语法检查通过 |
+| `npm run check:types` | TypeScript 严格消费端编译通过 |
+| `npm run verify:consumer` | 核心和 DSH 两个实际 tarball 离线安装通过；旧默认配置、全局 9 个工具、权限拒绝、回想—取用—结算及卸载通过 |
+| `npm run release:check` | 当前文件与元数据检查通过 |
+| Windows ACL 合成验证 | 读取与重复打开成功，覆盖、创建和删除被拒绝；不代表生产宿主已配置权限 |
+| 并发写入回归 | 三个进程的成功更新不丢失；修复 Windows 短暂文件替换失败，保留有上限的重试 |
+
+已补充针对写锁、未决投递、稳定来源身份、前台待办、DSH 默认配置和类型契约的修复与回归。全局来源范围、支持格式与实际限制见 [接入说明](read-only-sources.md)。
+
+本地检查使用合成输入和脚本化模型钩子；真实模型自然度、真实 DSH 服务桥接、生产投递与长期运行仍未验收。GitHub CI 的结果以对应提交的 Actions 记录为准。
+
+复现：
+
+```bash
+npm ci
+npm run verify
+npm run check:types
+npm run release:check
+npm run verify:consumer
+```
+
+## 公开 v0.3.0 的历史验证
+
 本页区分已有测试通过与尚未覆盖的行为。审核日期为 2026-11-04（上海时间），代码基线为 `c4e7b44db1a208fc4c6dde754415f6813d7a7977`，版本 `0.3.0`。
 
 ## 已验证

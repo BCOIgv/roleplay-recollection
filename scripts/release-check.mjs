@@ -14,7 +14,7 @@ const required = [
   'CODE_OF_CONDUCT.md', 'index.mjs', 'index.d.ts', '.github/workflows/ci.yml',
   'docs/api.md', 'docs/architecture.md', 'docs/solitude.md', 'docs/naming.md',
   'docs/releasing.md', 'docs/verification.md',
-  'dsh/package.json', 'dsh/index.js', 'dsh/cordis.patch.yml', 'dsh/README.md',
+  'dsh/package.json', 'dsh/index.js', 'dsh/global.js', 'dsh/LICENSE', 'dsh/cordis.patch.yml', 'dsh/README.md',
   'dsh/locale/en.json', 'dsh/locale/zh.json', 'dsh/icon.svg',
 ];
 

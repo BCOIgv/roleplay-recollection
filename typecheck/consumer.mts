@@ -1,0 +1,10 @@
+import {GlobalMemoryLibrary,GlobalRecollection,initializeMemorySources,ReadOnlyMemorySource} from 'roleplay-recollection';
+const source={id:'x',file:'data.json',format:'json' as const,fields:{id:'id',text:'text'}};
+const library=new GlobalMemoryLibrary({sources:[source],authorize:()=>true});
+const snapshot=new ReadOnlyMemorySource(source).snapshot();
+const runtime=new GlobalRecollection({characterId:'a',mode:'roleplay',storyId:'s'},{library,contextKey:()=> 'trusted'});
+const result=await runtime.recollect({mode:'roleplay',storyId:'s',trigger:'cue',cue:'rain',opportunityId:'o'},{access:{}});
+const intent: string|null|undefined=result.intentId;
+const setup=await initializeMemorySources({sources:[{id:'x',file:'data.json',format:'auto'}]});
+void [intent,setup,snapshot];
+await runtime.close();

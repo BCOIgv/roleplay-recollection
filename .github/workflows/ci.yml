@@ -28,6 +28,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - name: Install development dependencies
+        run: npm ci
+      - name: Type declarations
+        run: npm run check:types
       - name: Test
         run: npm test
       - name: Check
@@ -37,5 +41,11 @@ jobs:
           npm run demo:basic
           npm run demo
           npm run demo:solitude
+          npm run demo:global
+      - name: Release metadata
+        run: npm run release:check
       - name: Package dry run
         run: npm pack --dry-run
+
+      - name: Installed core and DSH consumer
+        run: npm run verify:consumer

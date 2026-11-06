@@ -18,7 +18,7 @@ npm run check         # syntax and package metadata
 npm run verify        # syntax + tests + examples
 ```
 
-There is no install step: the package has no dependencies. Use `npm install` only if you add
+Core checks need no install step: the core package has no dependencies. The DSH package requires the core to be installed for runtime tests. Use `npm install` only if you add
 a dev tool; avoid adding runtime dependencies unless discussed first.
 
 ## Project layout
@@ -36,7 +36,7 @@ scripts/    check, verify, release-check, configure-repo
 - 2 spaces, single quotes, semicolons, ESM imports with `.mjs` extensions.
 - Keep functions small and explicit; prefer early returns to nested conditionals.
 - Comments explain **why**, not what; do not narrate obvious code.
-- No network, timers, platform SDKs, or hidden global state in `src/`.
+- No direct network clients, background schedulers, platform SDKs, or hidden global state in `src/`. Model timeout timers are permitted.
 - New behavior needs a regression test in `test/`; update docs and `CHANGELOG.md`.
 - Do not commit `memory-state.json`, `.env`, API keys, or generated reports.
 

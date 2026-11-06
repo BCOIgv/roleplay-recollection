@@ -108,7 +108,7 @@ export class CompanionMemory {
         }
         return {stored: false, duplicate: true, id: item.id};
       }
-      const sameSource = state.episodes.find(record => record.sourceKey === item.sourceKey);
+      const sameSource = state.episodes.find(record => record.sourceKey === item.sourceKey || (record.sourceIds || []).some(id => item.sourceIds.includes(id)));
       if (sameSource) {
         return {
           stored: false,
@@ -159,7 +159,11 @@ export class CompanionMemory {
         detailFaded: false,
       });
       state.thoughts = state.thoughts.filter(thought => thought.memoryId !== id);
-      state.expressions = state.expressions.filter(expression => expression.memoryId !== id);
+      state.expressions = state.expressions.filter(expression => {
+        if (expression.memoryId !== id) return true;
+        if (expression.origin === 'solitude' && ['taken', 'unknown'].includes(expression.status)) { expression.text = ''; expression.anchor = ''; return true; }
+        return false;
+      });
       state.epoch++;
     });
     this.controller?.abort(stopped());
@@ -175,10 +179,15 @@ export class CompanionMemory {
         id: existing.id,
         revision: existing.revision,
         sourceKey: existing.sourceKey,
+        sourceIds: existing.sourceIds || [],
         status: 'withdrawn',
       };
       state.thoughts = state.thoughts.filter(thought => thought.memoryId !== id);
-      state.expressions = state.expressions.filter(expression => expression.memoryId !== id);
+      state.expressions = state.expressions.filter(expression => {
+        if (expression.memoryId !== id) return true;
+        if (expression.origin === 'solitude' && ['taken', 'unknown'].includes(expression.status)) { expression.text = ''; expression.anchor = ''; return true; }
+        return false;
+      });
       state.epoch++;
       return {forgotten: true, id};
     });
@@ -195,7 +204,11 @@ export class CompanionMemory {
       existing.status = available ? 'active' : 'unavailable';
       if (!available) {
         state.thoughts = state.thoughts.filter(thought => thought.memoryId !== id);
-        state.expressions = state.expressions.filter(expression => expression.memoryId !== id);
+        state.expressions = state.expressions.filter(expression => {
+        if (expression.memoryId !== id) return true;
+        if (expression.origin === 'solitude' && ['taken', 'unknown'].includes(expression.status)) { expression.text = ''; expression.anchor = ''; return true; }
+        return false;
+      });
       }
       state.epoch++;
     });
@@ -247,7 +260,7 @@ export class CompanionMemory {
     if (context?.trigger === 'idle') return this.solitude(context, {signal: parentSignal});
     const current = situation(context, this.config);
     if (current.skip) return {status: 'skipped', reason: current.skip, modelCalls: 0};
-    if (current.busy || current.userAwaitingReply) {
+    if (current.busy || current.userAwaitingReply || current.hasPendingWork) {
       return {status: 'skipped', reason: 'conversation_has_priority', modelCalls: 0};
     }
     if (this.closed || parentSignal?.aborted) {
@@ -423,7 +436,7 @@ export class CompanionMemory {
       return takeContact(this, id, context);
     }
     const current = situation({...context, trigger: context?.trigger || 'idle'}, this.config);
-    if (current.skip || current.busy || current.userAwaitingReply || !current.allowExpression) return null;
+    if (current.skip || current.busy || current.userAwaitingReply || current.hasPendingWork || !current.allowExpression) return null;
     return this.store.transaction(state => {
       if (state.paused) return null;
       const proposal = state.expressions.find(item => item.id === id && item.status === 'pending');

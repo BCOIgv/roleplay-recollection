@@ -35,6 +35,7 @@ export function episode(input, cfg, now) {
     truth: input.truth,
     storyId: cfg.storyId,
     occurredAt: input.occurredAt,
+    sourceIds: evidence.map(entry => hash(JSON.stringify([entry.kind, entry.id]))).sort(),
     sourceKey: hash(JSON.stringify(
       evidence
         .map(entry => [entry.kind, entry.id, entry.text])

@@ -19,6 +19,7 @@ const testOutput = run('tests', ['--test', '--test-reporter=tap']);
 run('demo:basic', ['examples/basic.mjs']);
 run('demo:scenarios', ['examples/scenarios.mjs']);
 run('demo:solitude', ['examples/solitude.mjs']);
+run('demo:global', ['examples/global.mjs']);
 
 const count = pattern => Number(testOutput.match(pattern)?.[1] ?? 0);
 const summary = {

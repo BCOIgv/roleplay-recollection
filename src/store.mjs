@@ -111,13 +111,31 @@ export class MemoryStore {
 
   acquireLock() {
     if (!this.lock) return undefined;
-    try {
-      return fs.openSync(this.lock, 'wx', 0o600);
-    } catch (error) {
-      if (error.code !== 'EEXIST') throw error;
-      this.reclaimStaleLock();
-      return fs.openSync(this.lock, 'wx', 0o600);
+    return this.withLockGuard(() => {
+      let fd;
+      try { fd = fs.openSync(this.lock, 'wx', 0o600); }
+      catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+        this.reclaimStaleLock();
+        fd = fs.openSync(this.lock, 'wx', 0o600);
+      }
+      try { fs.writeFileSync(fd, String(process.pid)); return fd; }
+      catch (error) { fs.closeSync(fd); throw error; }
+    });
+  }
+
+  withLockGuard(fn) {
+    const guard = this.lock + '.guard';
+    const deadline = Date.now() + 250;
+    while (true) {
+      try { fs.mkdirSync(guard, {mode: 0o700}); break; }
+      catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+        if (Date.now() >= deadline) throw new Error('Writer guard busy; after a crash, verify all writers stopped before manual recovery');
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2);
+      }
     }
+    try { return fn(); } finally { fs.rmdirSync(guard); }
   }
 
   reclaimStaleLock() {
@@ -125,8 +143,9 @@ export class MemoryStore {
     try {
       pid = Number(fs.readFileSync(this.lock, 'utf8').trim());
     } catch {
-      // An empty or unreadable lock file cannot belong to a live writer.
+      // Initialization or an unreadable owner is not proof of a dead writer.
     }
+    if (!Number.isSafeInteger(pid) || pid <= 0) throw new Error('Memory store lock owner is unknown');
     let alive = false;
     if (Number.isSafeInteger(pid) && pid > 0) {
       try {
@@ -144,7 +163,6 @@ export class MemoryStore {
     let lock;
     try {
       lock = this.acquireLock();
-      if (lock !== undefined) fs.writeFileSync(lock, String(process.pid));
       const state = this.read();
       const result = fn(state);
       validateState(state, this.identity);
@@ -154,7 +172,15 @@ export class MemoryStore {
         const temp = this.file + '.' + crypto.randomUUID();
         try {
           fs.writeFileSync(temp, raw, {flag: 'wx', mode: 0o600});
-          fs.renameSync(temp, this.file);
+          const renameDeadline = Date.now() + 500;
+          while (true) {
+            try { fs.renameSync(temp, this.file); break; }
+            catch (error) {
+              if (process.platform !== 'win32' || !['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || Date.now() >= renameDeadline) throw error;
+              // Retry the same prepared bytes, never replay the transaction callback.
+              Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5);
+            }
+          }
         } finally {
           if (fs.existsSync(temp)) fs.unlinkSync(temp);
         }
@@ -164,8 +190,14 @@ export class MemoryStore {
       return result;
     } finally {
       if (lock !== undefined) {
-        fs.closeSync(lock);
-        fs.unlinkSync(this.lock);
+        try {
+          this.withLockGuard(() => {
+            const owner = fs.fstatSync(lock, {bigint: true});
+            const current = fs.lstatSync(this.lock, {bigint: true});
+            if (owner.ino !== current.ino || owner.dev !== current.dev) throw new Error('Writer lock ownership changed');
+            fs.unlinkSync(this.lock);
+          });
+        } finally { fs.closeSync(lock); }
       }
     }
   }

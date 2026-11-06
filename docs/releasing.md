@@ -4,8 +4,8 @@
 
 截至 2026-11-04（上海时间）：
 
-- [GitHub v0.3.0](https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0) 已发布；标签及 `main` 对应 `c4e7b44db1a208fc4c6dde754415f6813d7a7977`。
-- Release 提供核心包、DSH 包及各自的 SHA-256 文件。
+- [GitHub v0.3.0](https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0) 已发布；发布标签对应 `c4e7b44db1a208fc4c6dde754415f6813d7a7977`。
+- Release 提供核心包、DSH 包及各自的 SHA-256 文件。`main` 继续接受后续源码更新，不能据分支内容推定旧发布产物已更新。
 - 公共 npm registry 对两个包名均返回 404，不能使用包名安装，也不能仅安装 DSH tarball 后期待 registry 自动提供核心依赖。
 - 已发现的代码与产物缺口见 [验证说明](verification.md)。下一次发布前应修复并补足回归。
 
@@ -61,3 +61,7 @@ Get-FileHash dist/*.tgz -Algorithm SHA256
 开发预览状态应在 Release 正文明确说明；是否勾选 GitHub prerelease、使用 npm `next` 标签，应与对外稳定性承诺一致。版本为 `0.x` 不会自动设置这些发布渠道标志。
 
 如发现问题，发布新的修复版本并说明受影响范围；不要将旧标签移动到新代码。npm 撤回或弃用按[官方当前政策](https://docs.npmjs.com/policies/unpublish)处理，不把固定时限视为无条件撤回许可。
+
+## 新增源码发布前检查
+
+当前全局增强要求 Node >=22.16。提交开发依赖 lockfile，并先运行 `npm ci`。除原检查外，运行 `npm run check:types` 与 `npm run verify:consumer`；后者打包并离线安装核心/DSH 两个产物，核对 LICENSE 和模块入口，再执行全局权限、回想和发送结算的消费端冒烟。正式发布前应更新版本和依赖范围，不能覆盖公开 0.3.0 同名资产。

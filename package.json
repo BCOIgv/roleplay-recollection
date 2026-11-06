@@ -36,7 +36,7 @@
   ],
   "sideEffects": false,
   "engines": {
-    "node": ">=22"
+    "node": ">=22.16"
   },
   "scripts": {
     "test": "node --test",
@@ -48,7 +48,10 @@
     "demo:solitude": "node examples/solitude.mjs",
     "demo:basic": "node examples/basic.mjs",
     "prepack": "npm run verify",
-    "prepublishOnly": "npm run verify"
+    "prepublishOnly": "npm run verify",
+    "verify:consumer": "node scripts/consumer-check.mjs",
+    "check:types": "tsc typecheck/consumer.mts --noEmit --strict --module nodenext --target es2022 --lib es2022,dom",
+    "demo:global": "node examples/global.mjs"
   },
   "repository": {
     "type": "git",
@@ -60,5 +63,8 @@
   "homepage": "https://github.com/BCOIgv/roleplay-recollection#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }

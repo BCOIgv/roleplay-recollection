@@ -26,8 +26,11 @@ available. This is a small volunteer project; no bounty program is implied.
 ## Data handling
 
 - The core performs **no network requests** and has no telemetry.
-- With `stateDir`, state is written to `memory-state.json` with `0600` permissions; the
-  directory is created with `0700`.
+- With `stateDir`, state is written unencrypted to `memory-state.json`. Creation requests
+  POSIX `0600` for files and `0700` for directories; it does not tighten existing directory
+  permissions. Windows ACLs must be configured by the host ([Node filesystem documentation](https://nodejs.org/api/fs.html#file-modes)).
+- Fading filters recall views; original evidence remains stored until withdrawal. It is not
+  data deletion or encryption.
 - The state contains selected memory text, private thoughts, expression candidates, and
   run metadata. Treat it as private user data.
 - `stateDir` must be a real directory; a state directory that is itself a symlink/junction is
@@ -41,6 +44,12 @@ available. This is a small volunteer project; no bounty program is implied.
 
 - Do not commit `memory-state.json`, `.env`, API keys, or real chat logs.
 - Error messages are redacted for `sk-...`-style secrets before being written to run records.
-- The writer lock rejects a live writer; a lock whose PID no longer exists is reclaimed.
-- If delivery outcome is `unknown`, the core does not retry and blocks new proactive contact
-  until the host reconciles it.
+- The writer lock checks a stored PID, but 0.3.0 can reclaim a live lock before its PID has
+  been written. Use one writer process per state directory until that race is fixed.
+- An `unknown` solitude delivery blocks new proactive contact while its record exists.
+  In 0.3.0, source revision or withdrawal removes that record even if delivery is unresolved.
+  Keep an independent host delivery ledger until this is fixed.
+
+## Unreleased source protections
+
+External readers never initialize or migrate source stores. Use an OS-restricted reader identity for a hard read-only boundary. Global derived state is separate; source references and audience permissions are revalidated before use. Unknown write-lock owners are not reclaimed; a leftover guard requires manual recovery after verifying all writers have stopped. Taken/unknown delivery records retain bookkeeping but lose withdrawn text. See docs/read-only-sources.md.

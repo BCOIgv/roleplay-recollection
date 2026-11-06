@@ -1,3 +1,5 @@
+> Unreleased source additions: read-only JSON/JSONL/SQLite adapters, validated setup mapping and global RP runtime. Requires Node >=22.16. See [integration guide](docs/read-only-sources.md). Public v0.3.0 assets do not contain these changes.
+
 <p align="center">
   <img src="docs/assets/banner.svg" alt="AI Roleplay Recollection · 朝花夕拾" width="100%">
 </p>

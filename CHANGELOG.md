@@ -4,9 +4,41 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Read-only native JSON, mapped JSON/JSONL and SQLite sources with bounded snapshots,
+  schema fingerprints, signed pagination and explicit partial-source reports.
+- Host-authorized global retrieval and a reference-based RP runtime: global cue recall,
+  solitude, audience-bound thoughts, source revalidation and durable delivery settlement.
+- First-run deterministic/model-assisted mapping, validated configuration persistence,
+  and DSH global tools through explicit trusted host services.
+- Consumer tarball checks, TypeScript compilation, Windows ACL probes and regression tests.
+
+### Fixed
+
+- Writer-lock initialization/reclamation race; unknown locks now fail closed.
+- Source changes retain minimal taken/unknown delivery records while erasing their text.
+- Stable evidence identity prevents edited-excerpt recapture for newly captured records.
+- DSH default mode, foreground-work checks, nullable storyId and idle return declarations.
+- Include DSH LICENSE and global adapter in the package.
+
+### Requirements
+
+- Node.js >=22.16 for the SQLite API. TypeScript is a development-only dependency.
+- Public v0.3.0 assets remain the historical release; these changes are not yet published.
+
+### Documentation
+
+- Distinguish the GitHub release from unavailable npm packages and document tarball installation.
+- Shorten entry-point, naming, verification, and release documentation.
+- Clarify view-based fading, model timeout timers, host responsibilities, filesystem permissions,
+  and known 0.3.0 validation gaps. Published v0.3.0 artifacts remain unchanged.
+
 ## [0.3.0] - 2026-11-03
 
-First public release under the names **AI Roleplay Recollection** (GitHub / npm) and **朝花夕拾** (Chinese). Formerly `companion-recollection`.
+First public GitHub release under the title **AI Roleplay Recollection** (package: `roleplay-recollection`) and **朝花夕拾** (Chinese). Formerly `companion-recollection`.
 
 ### Added
 
@@ -18,8 +50,9 @@ First public release under the names **AI Roleplay Recollection** (GitHub / npm)
   used_in_reply/not_sent/unknown lifecycle.
 - Receipt-based reconciliation: only real `sent` or `used_in_reply` receipts update contact
   cooldown; unknown delivery is not replayed.
-- Stale writer-lock recovery for persistent state, with live-writer protection.
+- PID-based writer-lock recovery for persistent state. The initialization race is documented in the current verification notes.
 - TypeScript declarations (`index.d.ts`) and a minimal `examples/basic.mjs`.
+- Separate `roleplay-recollection-dsh` bundle with a configuration patch, locale metadata, and 11 tools.
 - 2 store-lock regression tests (56 offline checks total).
 
 ### Changed
@@ -49,10 +82,10 @@ First public release under the names **AI Roleplay Recollection** (GitHub / npm)
 ### Security
 
 - Error messages are redacted for `sk-...`-style secrets before being stored in run records.
-- State files are written with `0600` permissions and state directories with `0700`.
+- Creation requests POSIX `0600` for state files and `0700` for new directories; Windows ACLs and existing directory permissions require host configuration.
 - The core performs no network requests and sends no messages.
 
-## [0.2.0] - 2026-11-02
+## 0.2.0 - 2026-11-02 (unpublished prototype)
 
 ### Added
 
@@ -65,4 +98,4 @@ First public release under the names **AI Roleplay Recollection** (GitHub / npm)
 - State file version 2 with atomic writes and a writer lock.
 
 [0.3.0]: https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.3.0
-[0.2.0]: https://github.com/BCOIgv/roleplay-recollection/releases/tag/v0.2.0
+[Unreleased]: https://github.com/BCOIgv/roleplay-recollection/compare/v0.3.0...HEAD

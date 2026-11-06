@@ -286,6 +286,77 @@ export interface SettlementResult {
   sent?: boolean;
 }
 
+/** Explicit read-only file sources. Paths are supplied by trusted host configuration. */
+export interface MemorySourceConfig {
+  id: string;
+  file: string;
+  format: 'native-v2' | 'json' | 'jsonl' | 'sqlite';
+  collection?: string;
+  fields?: Partial<Record<'id' | 'text' | 'scope' | 'time' | 'truth' | 'status' | 'storyId', string>>;
+  timeUnit?: 'seconds' | 'milliseconds' | 'iso';
+  maxBytes?: number;
+  nativePolicy?: {detailThreshold?: number; dormantThreshold?: number};
+  rp?: {enabled: boolean; textField?: string; detail?: Detail};
+  statusMap?: Record<string, MemoryMaterial['status']>;
+  truthMap?: Record<string, MemoryMaterial['truth']>;
+  schemaFingerprint?: string;
+  maxRecords?: number;
+}
+export interface MemoryMaterial {
+  detail?: Detail;
+  ref: string;
+  sourceId: string;
+  originalId: string;
+  sourceScope: string | null;
+  storyId: string | null;
+  characterId: string | null;
+  truth: Truth | 'unknown';
+  status: 'active' | 'archived' | 'withdrawn' | 'unavailable' | 'unknown';
+  text: string | null;
+  eventAt: number | null;
+  revision: string;
+  snapshotId: string;
+  rp?: {text: string; detail: Detail; evidence: EvidenceInput[]} | null;
+}
+export interface MemorySourceSnapshot {
+  sourceId: string;
+  snapshotId: string;
+  asOf: number;
+  consistency: 'file-version' | 'transaction';
+  schemaFingerprint: string;
+  scanned: number;
+  materials: MemoryMaterial[];
+}
+export declare function validateSourceConfig(input: MemorySourceConfig): MemorySourceConfig;
+export declare class ReadOnlyMemorySource {
+  constructor(config: MemorySourceConfig);
+  readonly id: string;
+  readonly config: MemorySourceConfig;
+  snapshot(options?: {now?: number}): MemorySourceSnapshot;
+}
+export interface MemoryAccessRequest {
+  context: unknown;
+  purpose: 'admin' | 'rp';
+  sourceId: string;
+  material?: MemoryMaterial;
+}
+export interface GlobalMemoryResult {
+  scope: 'admin-global';
+  items: MemoryMaterial[];
+  matched: number;
+  truncated: boolean;
+  sourceCoverage: 'complete' | 'partial';
+  nextCursor: string | null;
+  sourceResults: Array<{sourceId: string; status: 'ok' | 'denied' | 'failed'; snapshotId?: string; scanned?: number; reason?: string}>;
+}
+export declare class GlobalMemoryLibrary {
+  assertRuntimeDirectory(directory: string): string;
+  replaceSource(config: MemorySourceConfig): void;
+  resolve(references: Array<{ref: string; revision: string; detail?: Detail; text: string}>, options?: {context?: unknown; now?: number}): Promise<boolean>;
+  constructor(options: {sources: MemorySourceConfig[]; unavailableSources?: Array<{id: string; reason?: string}>; authorize: (request: MemoryAccessRequest) => boolean | Promise<boolean>});
+  query(options?: {query?: string; limit?: number; purpose?: 'admin' | 'rp'; context?: unknown; now?: number; cursor?: string | null}): Promise<GlobalMemoryResult>;
+}
+
 export declare class CompanionMemory {
   constructor(input: CompanionOptions, hooks?: CompanionHooks);
 
@@ -305,7 +376,7 @@ export declare class CompanionMemory {
   pause(value?: boolean): {paused: boolean};
   visible(context: Situation): MemoryView[];
   privateThoughts(context: Situation): PrivateThought[];
-  recollect(context: Situation, options?: {signal?: AbortSignal}): Promise<RecollectionResult>;
+  recollect(context: Situation, options?: {signal?: AbortSignal}): Promise<RecollectionResult | SolitudeResult>;
   takeExpression(id: string, context: Situation): ExpressionCandidate | null;
   solitude(context: Situation, options?: {signal?: AbortSignal}): Promise<SolitudeResult>;
   settleExpression(id: string, result: {outcome: ContactOutcome; receipt?: string}): SettlementResult;
@@ -317,3 +388,40 @@ export declare function memoryView(
   config: ResolvedConfig,
   now: number,
 ): MemoryView | null;
+
+
+export const INITIALIZATION_PROMPT: string;
+export type SourceRegistration = Omit<MemorySourceConfig, 'format'> & {format: MemorySourceConfig['format'] | 'auto'};
+export interface SourceSetupResult {
+  sources: MemorySourceConfig[];
+  results: Array<{id: string; status: 'active' | 'pending' | 'failed'; records?: number; schemaFingerprint?: string; reason?: string}>;
+  modelCalls: number;
+  configurationDigest: string;
+}
+export declare function describeSource(source: SourceRegistration): Record<string, unknown>;
+export declare function initializeMemorySources(options: {sources: SourceRegistration[]; model?: ModelHook | null; configDirectory?: string; signal?: AbortSignal; timeoutMs?: number}): Promise<SourceSetupResult>;
+export interface GlobalRunResult {
+  status: 'skipped' | 'interrupted' | 'failed' | 'silence' | 'recalled' | 'kept' | 'expression_proposed' | 'solitude_ended';
+  reason?: string;
+  modelCalls: number;
+  intentId?: string | null;
+  memories?: MemoryMaterial[];
+  sent?: false;
+  sourceResults?: GlobalMemoryResult['sourceResults'];
+}
+export interface GlobalVisibleResult {scope: 'admin-global'; items: MemoryMaterial[]; sourceResults: GlobalMemoryResult['sourceResults']; partial?: boolean}
+export interface GlobalRuntimeOptions {access?: unknown; signal?: AbortSignal}
+export declare class GlobalRecollection {
+  constructor(input: Omit<CompanionOptions, 'scopeId'>, hooks: CompanionHooks & {library: GlobalMemoryLibrary; contextKey: (access: unknown) => string | null});
+  readonly config: ResolvedConfig;
+  visible(context: Situation, options?: GlobalRuntimeOptions): Promise<GlobalVisibleResult>;
+  refresh(options?: GlobalRuntimeOptions): Promise<{items: MemoryMaterial[]; sourceResults: GlobalMemoryResult['sourceResults']; partial: boolean}>;
+  recollect(context: Situation, options?: GlobalRuntimeOptions): Promise<GlobalRunResult>;
+  solitude(context: Situation, options?: GlobalRuntimeOptions): Promise<GlobalRunResult>;
+  privateThoughts(context: Situation, options?: GlobalRuntimeOptions): Promise<Array<{text: string; usableAsEvidence: false}>>;
+  takeExpression(id: string, context: Situation, options?: GlobalRuntimeOptions): Promise<{id: string; text: string; sent: false} | null>;
+  settleExpression(id: string, result: {outcome: ContactOutcome; receipt?: string}, options?: GlobalRuntimeOptions): {id: string; status: ContactOutcome};
+  status(): {scope: 'admin-global'; paused: boolean; closed: boolean; modelCallsToday: number; nextAt: number; lastContactAt: number | null; pending: Array<{id: string; status: string}>};
+  pause(value?: boolean): {paused: boolean};
+  close(): Promise<void>;
+}

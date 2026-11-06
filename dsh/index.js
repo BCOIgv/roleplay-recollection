@@ -1,3 +1,4 @@
+import {applyGlobal} from './global.js';
 import {CompanionMemory} from 'roleplay-recollection';
 
 const output = {
@@ -79,6 +80,8 @@ const situationProperties = {
 export const inject = ['tools'];
 
 export function apply(ctx, config = {}) {
+  if (config.sources || ctx.recollection?.listMemorySources) return applyGlobal(ctx, config);
+  config = {mode: 'companion', ...config};
   const {
     characterId = 'default',
     scopeId = 'default',
@@ -131,7 +134,7 @@ export function apply(ctx, config = {}) {
       (args, exec) => core.recollect({
         ...situation(config, {...args, trigger: 'cue'}),
         opportunityId: args.opportunityId,
-      }, {signal: exec.signal})),
+      }, {signal: exec?.signal})),
 
     tool('roleplay_recollection_revise', 'Revise an existing experience using its current revision.',
       {

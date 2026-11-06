@@ -1,3 +1,5 @@
+> 本文描述公开 0.3.0 的局部核心基线。当前源码新增的全局架构、修复和边界见 [全局 RP 接入说明](read-only-sources.md)。
+
 # 架构
 
 > 适用版本：roleplay-recollection 0.3.0。已知实现缺口见 [验证说明](verification.md)。

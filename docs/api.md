@@ -1,3 +1,5 @@
+> 新增全局接口见 [全局 RP 接入说明](read-only-sources.md)。本页主要说明原有局部核心。
+
 # API 参考
 
 > 适用版本：roleplay-recollection 0.3.0。运行时为纯 ESM，Node.js ≥ 22，无运行时依赖。
@@ -70,7 +72,7 @@ const memory = new CompanionMemory({
 | `solitudeMinutes` | 10 | 1–10 | 单次独处时限 |
 | `unansweredContactHours` | 72 | 1–336 | 未回应时的联系冷却 |
 
-配置在构造时校验并冻结；非法值会抛出 `Error`。计数及小时/分钟等整数参数不接受小数；必须满足 `0 < dormantThreshold < detailThreshold < 1`。0.3.0 的构造参数 `storyId` 必须省略或为字符串，显式 `null` 会抛错，尽管当前类型声明允许它。
+配置在构造时校验并冻结；非法值会抛出 `Error`。计数及小时/分钟等整数参数不接受小数；必须满足 `0 < dormantThreshold < detailThreshold < 1`。0.3.0 的构造参数 `storyId` 必须省略或为字符串，当前源码将显式 `null` 规范化为缺省值；公开 0.3.0 仍存在该差异。
 
 ## 3. 模型钩子
 

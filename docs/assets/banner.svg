@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="bannerTitle bannerDesc">
-  <title id="bannerTitle">朝花夕拾 · AI Roleplay Recollection</title>
-  <desc id="bannerDesc">A dusk gradient banner with a crescent moon, falling petals, the title 朝花夕拾, and the descriptor AI 角色扮演回忆核心.</desc>
+  <title id="bannerTitle">朝花夕拾 · Roleplay Recollection</title>
+  <desc id="bannerDesc">朝花夕拾：AI 角色的独处回忆与主动表达。Roleplay Recollection: idle recollection, mind-wandering, and optional outreach for AI characters.</desc>
   <defs>
     <linearGradient id="bannerBg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0d1420"/>
@@ -48,9 +48,9 @@
   </g>
 
   <text x="252" y="160" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="94" font-weight="600" letter-spacing="10" fill="url(#bannerInk)">朝花夕拾</text>
-  <text x="258" y="208" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="19" letter-spacing="12" fill="#cdb892">AI ROLEPLAY RECOLLECTION</text>
+  <text x="258" y="208" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="23" letter-spacing="5" fill="#cdb892">Roleplay Recollection</text>
 
   <rect x="258" y="238" width="360" height="1" fill="url(#bannerLine)"/>
-  <text x="258" y="282" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="24" fill="#aeb6c4">AI 角色扮演回忆核心</text>
-  <text x="258" y="314" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="14" letter-spacing="2" fill="#6f7a8c">A RECOLLECTION ENGINE FOR AI ROLEPLAY</text>
+  <text x="258" y="282" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="24" fill="#aeb6c4">AI 角色的独处回忆与主动表达</text>
+  <text x="258" y="314" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="15" fill="#8d98aa">Idle recollection, mind-wandering, and optional outreach for AI characters</text>
 </svg>

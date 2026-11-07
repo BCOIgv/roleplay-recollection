@@ -1,5 +1,7 @@
 # 全局记忆只读接入与 RP 运行
 
+朝花夕拾（Roleplay Recollection）定位为已有记忆之上的 AI 角色回忆行为层，副标题为“AI 角色的独处回忆与主动表达”。本页描述已实现接入；边界提案与效果验证分别见[漫游边界研究](wandering-boundaries.md)和[测试计划](evaluation-plan.md)，不构成新默认值或真实效果结论。
+
 本页描述当前源码的未发布增强。公开 0.3.0 tarball 不包含这些新增接口。运行环境为 Node.js ≥ 22.16；SQLite 使用 Node 内置模块，没有新增运行时第三方依赖。
 
 ## 数据流
@@ -80,6 +82,7 @@ const result = await runtime.recollect({
 `visible`、`privateThoughts`、`recollect`、`solitude`、`takeExpression` 均为异步方法；`status/pause/settleExpression` 为同步方法。调用时将身份作为 options.access 提供；模型输入不包含该凭据。
 
 - 线索回想与独处共享每日预算；工作、等待回复、暂停会阻止可选回想。
+- 暂定想法可由宿主读取；当前不会自动进入下一轮漫游或普通回复。宿主是否消费及如何消费，需要作为独立的接入和实验条件记录。
 - 独处按持久化机会、空闲时间和上海活动时间窗运行，最多配置步数，允许静默结束；需要宿主触发，不创建后台守护。
 - 模型输出必须引用实际材料及原文子串；这验证引用存在，不保证整句话的语义完全受证据支持。
 - 每次读取、查看想法、生成结果提交和取用候选都会重新校验来源版本和权限。`refresh({access})` 可供宿主额外主动清点。

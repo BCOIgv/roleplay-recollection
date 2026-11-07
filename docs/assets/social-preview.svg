@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="socialTitle socialDesc">
-  <title id="socialTitle">朝花夕拾 · AI Roleplay Recollection</title>
-  <desc id="socialDesc">Dusk-themed social preview with the title 朝花夕拾, subtitle AI ROLEPLAY RECOLLECTION, descriptor AI 角色扮演回忆核心, and feature notes about fading memories, solitude, and receipts.</desc>
+  <title id="socialTitle">朝花夕拾 · Roleplay Recollection</title>
+  <desc id="socialDesc">朝花夕拾：AI 角色的独处回忆与主动表达。Roleplay Recollection: idle recollection, mind-wandering, and optional outreach for AI characters. Recollection, tentative thoughts, expression intent, and host-controlled delivery remain separate.</desc>
   <defs>
     <linearGradient id="socialBg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0c1320"/>
@@ -48,33 +48,33 @@
   </g>
 
   <text x="272" y="172" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="120" font-weight="600" letter-spacing="14" fill="url(#socialInk)">朝花夕拾</text>
-  <text x="280" y="228" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="18" letter-spacing="9" fill="#cdb892">AI ROLEPLAY RECOLLECTION</text>
+  <text x="280" y="228" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="25" letter-spacing="4" fill="#cdb892">Roleplay Recollection</text>
 
   <rect x="280" y="268" width="430" height="1" fill="url(#socialLine)"/>
-  <text x="280" y="322" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="30" fill="#d7dde8">AI 角色扮演回忆核心</text>
-  <text x="280" y="362" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="16" letter-spacing="2" fill="#8d98aa">A RECOLLECTION ENGINE FOR AI ROLEPLAY</text>
+  <text x="280" y="322" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun',serif" font-size="30" fill="#d7dde8">AI 角色的独处回忆与主动表达</text>
+  <text x="280" y="362" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="14" fill="#8d98aa">Idle recollection, mind-wandering, and optional outreach for AI characters</text>
 
   <g font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="16" fill="#c8d0dc">
     <rect x="280" y="424" width="430" height="42" rx="21" fill="#e8b86d" opacity="0.08"/>
-    <text x="304" y="451">fading memories · zero-extra-call lookup</text>
+    <text x="304" y="451">idle recollection · quiet exit allowed</text>
     <rect x="280" y="480" width="430" height="42" rx="21" fill="#e8b86d" opacity="0.08"/>
-    <text x="304" y="507">unstructured solitude · optional later contact</text>
+    <text x="304" y="507">tentative thoughts · optional expression</text>
     <rect x="280" y="536" width="430" height="42" rx="21" fill="#e8b86d" opacity="0.08"/>
-    <text x="304" y="563">receipt-based · no runtime dependencies</text>
+    <text x="304" y="563">host-controlled timing · interruption · delivery</text>
   </g>
 
   <g transform="translate(900,180)" font-family="'Segoe UI',ui-sans-serif,sans-serif">
     <rect width="280" height="300" rx="18" fill="#ffffff" opacity="0.035"/>
     <rect x="1" y="1" width="278" height="298" rx="17" fill="none" stroke="#e8b86d" stroke-opacity="0.18"/>
-    <text x="28" y="52" font-size="14" letter-spacing="2" fill="#8d98aa">MEMORY LIFECYCLE</text>
-    <text x="28" y="96" font-size="20" fill="#f0dfc2">specific</text>
-    <text x="28" y="128" font-size="20" fill="#cdb892">impression</text>
-    <text x="28" y="160" font-size="20" fill="#8d98aa">dormant</text>
+    <text x="28" y="52" font-size="14" letter-spacing="2" fill="#8d98aa">RECOLLECTION</text>
+    <text x="28" y="96" font-size="20" fill="#f0dfc2">remember</text>
+    <text x="28" y="128" font-size="20" fill="#cdb892">wander or leave</text>
+    <text x="28" y="160" font-size="20" fill="#8d98aa">optional expression</text>
     <line x1="28" y1="188" x2="252" y2="188" stroke="#e8b86d" stroke-opacity="0.16"/>
     <text x="28" y="224" font-size="14" letter-spacing="2" fill="#8d98aa">SOLITUDE</text>
     <text x="28" y="256" font-size="16" fill="#c8d0dc">leave · linger</text>
     <text x="28" y="282" font-size="16" fill="#c8d0dc">follow · switch</text>
   </g>
 
-  <text x="96" y="606" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="14" letter-spacing="2" fill="#6f7a8c">roleplay-recollection · Node.js ≥ 22 · MIT</text>
+  <text x="96" y="606" font-family="'Segoe UI',ui-sans-serif,sans-serif" font-size="14" letter-spacing="2" fill="#8d98aa">roleplay-recollection · Node.js ≥ 22.16 · MIT</text>
 </svg>

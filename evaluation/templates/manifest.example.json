@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "study_id": "replace-before-future-execution",
+  "status": "plan-only",
+  "stage": "P1",
+  "timezone": "Asia/Shanghai",
+  "future_execution_authorized": false,
+  "implementation": {
+    "commit": null,
+    "working_tree_patch_sha256": null,
+    "runtime_mode": null,
+    "host_version": null,
+    "condition_adapter_sha256": null,
+    "config_snapshot_ref": null,
+    "runtime_defaults_changed": false,
+    "proposed_design_enabled": false
+  },
+  "conditions": ["A", "B", "C", "C0", "B+T"],
+  "primary_comparison": ["C", "B"],
+  "model": {
+    "provider": null,
+    "version": null,
+    "sampling_parameters_ref": null,
+    "prompt_hashes_ref": null,
+    "pricing_snapshot_ref": null,
+    "usage_accounting_rules_ref": null
+  },
+  "data": {
+    "source_kind": "synthetic",
+    "frozen_cases_ref": null,
+    "source_snapshot_sha256": null,
+    "audience_policy_ref": null,
+    "development_split_ref": null,
+    "heldout_split_ref": null,
+    "future_real_data_scope": null,
+    "future_model_recipient": null,
+    "retention_policy_ref": null
+  },
+  "design": {
+    "randomization_unit": null,
+    "assignment_seed": null,
+    "opportunity_schedule_ref": null,
+    "condition_state_isolation_ref": null,
+    "material_matching_rule_ref": null,
+    "resource_matching_rule_ref": null,
+    "thought_consumption_policy_ref": null,
+    "heldout_rater_blinding_ref": null,
+    "analysis_plan_ref": null
+  },
+  "resources_to_decide": {
+    "max_calls_per_condition": null,
+    "max_tokens_per_condition": null,
+    "max_cost_per_condition": null,
+    "max_wall_time_per_condition": null,
+    "max_study_cost": null,
+    "units_and_currency": null
+  },
+  "sample_plan_to_decide": {
+    "scenario_count": null,
+    "samples_per_scenario": null,
+    "independent_raters": null,
+    "future_participants": null,
+    "eligible_opportunity_target": null,
+    "max_observation_period": null,
+    "planned_analysis_points": null
+  },
+  "decision_thresholds_to_freeze": {
+    "primary_metric": null,
+    "delta_value": null,
+    "margin_burden": null,
+    "cost_ceiling": null,
+    "integration_ceiling": null,
+    "uncertainty_method_ref": null,
+    "critical_violation_handling": "stop-stage-and-review"
+  },
+  "phase_completion": {
+    "P0": "separate-offline-report-required",
+    "P1": "not-executed",
+    "P2": "not-executed",
+    "P3": "not-executed",
+    "P4": "not-executed",
+    "P5": "not-executed"
+  }
+}

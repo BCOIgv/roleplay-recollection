@@ -33,6 +33,14 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Documentation
 
+- Standardize the 朝花夕拾 / Roleplay Recollection brand, functional subtitles, package
+  descriptions, DSH locales, and display assets without renaming packages or repositories.
+- Add wandering-boundary alternatives and a staged independent-value study protocol,
+  with packaged synthetic-only probes and recording templates; preserve runtime parameter defaults.
+- Rewrite Chinese and English entry points around idle character recollection and
+  optional expression, with a solitude demo, explicit source/release choices, and DSH modes.
+- Add product positioning, ecosystem overlap, naming, validation needs, and suggested
+  repository metadata. Use a matching cue in the basic offline demo.
 - Distinguish the GitHub release from unavailable npm packages and document tarball installation.
 - Shorten entry-point, naming, verification, and release documentation.
 - Clarify view-based fading, model timeout timers, host responsibilities, filesystem permissions,

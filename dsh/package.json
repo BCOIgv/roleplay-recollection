@@ -1,7 +1,7 @@
 {
   "name": "roleplay-recollection-dsh",
   "version": "0.3.0",
-  "description": "DSH bundle for roleplay-recollection: source-backed character recollection and recall tools.",
+  "description": "DSH bundle for Roleplay Recollection: AI character recollection tools, with idle wandering and optional outreach through global-mode host services.",
   "license": "MIT",
   "author": "AI Roleplay Recollection contributors",
   "type": "module",
@@ -24,7 +24,10 @@
     "dsh",
     "deepseek-harness",
     "roleplay-recollection",
-    "mcp",
+    "recollection",
+    "ai-roleplay",
+    "ai-companion",
+    "mind-wandering",
     "memory",
     "roleplay"
   ],

@@ -19,7 +19,7 @@ const saved = memory.capture({
   evidence: [{id: 'demo-source-1', kind: 'shared_event', text: '那天窗外下着雨，我们都没说话。'}],
 }, {mode: 'companion'});
 
-const visible = memory.visible({mode: 'companion', trigger: 'cue', cue: '下雨'});
+const visible = memory.visible({mode: 'companion', trigger: 'cue', cue: '听雨'});
 console.log(JSON.stringify({
   saved,
   visible: visible.map(({gist, detail, evidence}) => ({gist, detail, evidence})),

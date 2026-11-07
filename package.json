@@ -1,7 +1,7 @@
 {
   "name": "roleplay-recollection",
   "version": "0.3.0",
-  "description": "A dependency-free recollection engine for AI roleplay and companion characters: source-backed episodes, time-based fading, cue recall, solitude, and optional later contact.",
+  "description": "Roleplay Recollection: idle recollection, mind-wandering, and optional outreach for AI characters. A Node.js behavior layer over stored memories, with host-controlled timing, interruption, and delivery.",
   "keywords": [
     "ai-roleplay",
     "roleplay-recollection",
@@ -11,6 +11,8 @@
     "roleplay",
     "recollection",
     "solitude",
+    "mind-wandering",
+    "proactive-agents",
     "llm"
   ],
   "license": "MIT",
@@ -31,6 +33,7 @@
     "index.d.ts",
     "src/",
     "docs/",
+    "evaluation/",
     "examples/",
     "CHANGELOG.md"
   ],

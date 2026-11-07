@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Roleplay Recollection",
-    "description": "Source-backed character recollection and recall tools for roleplay and companion sessions."
+    "description": "Idle recollection, mind-wandering, and optional outreach for AI characters. Global mode requires host model, identity, and delivery services; local mode exposes episode tools."
   }
 }

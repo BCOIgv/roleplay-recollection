@@ -1,6 +1,7 @@
 # Contributing
 
-Thanks for taking the time to improve AI Roleplay Recollection. This project is intentionally small:
+Thanks for taking the time to improve Roleplay Recollection (朝花夕拾), a character
+recollection behavior layer over existing memories. This project is intentionally small:
 plain ESM, no runtime dependencies, and behavior that can be tested offline.
 
 ## Before you start
@@ -12,14 +13,20 @@ plain ESM, no runtime dependencies, and behavior that can be tested offline.
 ## Development
 
 ```bash
-node --version        # need >= 22
-npm test              # 56 offline tests
+node --version        # need >= 22.16
+npm ci                # install development tools
+npm test              # offline tests
 npm run check         # syntax and package metadata
 npm run verify        # syntax + tests + examples
+npm run check:types   # strict TypeScript consumer check
+npm run release:check # release files and metadata
+npm run verify:consumer # install and exercise both tarballs
 ```
 
-Core checks need no install step: the core package has no dependencies. The DSH package requires the core to be installed for runtime tests. Use `npm install` only if you add
-a dev tool; avoid adding runtime dependencies unless discussed first.
+The core has no third-party runtime dependencies. `npm ci` installs development tools,
+including TypeScript, for the full workflow above. The consumer check builds and installs
+both packages in a temporary project. The offline basic demo can run without installing
+development dependencies. Avoid adding runtime dependencies unless discussed first.
 
 ## Project layout
 
@@ -39,6 +46,9 @@ scripts/    check, verify, release-check, configure-repo
 - No direct network clients, background schedulers, platform SDKs, or hidden global state in `src/`. Model timeout timers are permitted.
 - New behavior needs a regression test in `test/`; update docs and `CHANGELOG.md`.
 - Do not commit `memory-state.json`, `.env`, API keys, or generated reports.
+- Keep implemented behavior, proposed designs, and unvalidated product hypotheses distinct.
+  See the [boundary review](docs/wandering-boundaries.md) and [evaluation plan](docs/evaluation-plan.md).
+  Scripted offline checks in `evaluation/` do not authorize real-model or user experiments.
 
 ## Commit messages
 

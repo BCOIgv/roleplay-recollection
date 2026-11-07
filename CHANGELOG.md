@@ -6,6 +6,14 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Evaluation tooling
+
+- Add a versioned scripted A/B/C/C0/B+T condition host using read-only sources,
+  audience and availability filtering, isolated state, paired thought masking, and
+  candidate settlement without sending. Keep private datasets and results external.
+- Add synthetic checks for silence, failures, foreground interruption, withdrawal,
+  permission revocation, and unknown delivery. Runtime parameter defaults are unchanged.
+
 ### Added
 
 - Read-only native JSON, mapped JSON/JSONL and SQLite sources with bounded snapshots,

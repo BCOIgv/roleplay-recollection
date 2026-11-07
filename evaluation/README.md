@@ -3,9 +3,9 @@
 This directory supports the [independent-value study plan](../docs/evaluation-plan.md)
 and the [wandering-boundary review](../docs/wandering-boundaries.md).
 
-Status: preparation and scripted offline checks only. No provider adapter, user-study
-runner, production scheduler, or message sender is included here. The proposed study
-conditions have not been implemented as live experiment arms.
+Status: scripted offline conditions are implemented; no live experiment arm has started.
+No provider adapter, user-study runner, production scheduler, or message sender is
+included here. Private materials and outputs must remain outside this repository.
 
 ## Run the offline boundary probes
 
@@ -20,6 +20,46 @@ in-memory sources, a controlled clock, and scripted hooks. Fixture overrides use
 already accepted by the core; they do not change `DEFAULTS` or select future defaults.
 No API key is needed, and no messages are sent. Global results without a detailed public
 finish reason retain `null`; they are not relabeled as voluntary exits.
+
+## Run scripted condition adaptation
+
+```bash
+node evaluation/check-conditions.mjs
+node evaluation/offline-conditions.mjs --cases <private-case-directory> --output <new-private-output-directory>
+```
+
+`check-conditions.mjs` runs only a synthetic case through 40 condition/variant runs.
+`offline-conditions.mjs` reads normalized case JSON and runs A (passive), B (single
+scripted reflection), C (the current global wandering path), C0 (paired C artifact with
+thoughts masked from later reply context), and B+T (single scripted reflection with a
+tentative thought). Normal, quiet, and protocol-failure variants are recorded for every
+case. Additional synthetic checks cover foreground priority, cancellation, withdrawal,
+permission revocation, and unknown delivery. Existing boundary probes cover shared
+budgets and hard limits.
+
+The host uses the real read-only JSONL library and public global runtime for schema,
+authorization, candidate validation, and settlement. B uses a single cue invocation
+with a frozen one-shot prompt identifier; this is a flow adapter, not a completed live
+baseline prompt study. All model responses remain scripted. C0 reuses C's artifact
+without a second model invocation and gets an independent output/state directory.
+
+Host version `scripted-condition-host-v1` explicitly places valid tentative thoughts in
+a *subsequent reply-context artifact* for C/B+T and masks them for C0. It does not alter
+core prompts, automatically feed thoughts into later wandering, or call a reply model.
+The later question enters only that artifact after idle generation. The host primes a
+controlled clock to a due opportunity with existing defaults; it does not reconstruct
+the historical host's actual eligibility or prior delivery ledger.
+
+Inputs require audience, availability and event timestamps, visible evidence, split,
+persona, and a later question. Source snapshots and state directories are separate.
+Wrong-audience and future-availability decoys test filtering. A candidate remains
+`sent: false`; normal scripted settlement is `not_sent`, and the unknown-delivery
+variant verifies that taking it again is blocked. No transport is installed.
+
+The CLI requires a new output directory outside the repository and input case tree.
+It writes full private context and artifacts there, so do not copy them into public
+issues, fixtures, or commits. Synthetic samples belong in source; private dataset IDs,
+source paths, scope maps, counts, and results do not.
 
 ## Study preparation files
 

@@ -51,6 +51,6 @@ chatbot
 
 中文短描述可用“已有记忆之上的 AI 角色回忆行为层”；英文短描述可用“a character recollection behavior layer over existing memories”。需要交代动作时使用“宿主控制时机、打断和投递”，避免写成安装即自动发消息。
 
-“独处”“私人想法”“想说的话”描述角色行为模拟；真实模型执行、空闲状态与消息投递由宿主提供。避免将这些表述扩展为已证实的主观体验或独立意识。命名与产品边界的完整评估见[产品定位诊断](product-positioning.md)。
+“独处”“私人想法”“想说的话”描述角色行为模拟；真实模型执行、空闲状态与消息投递由宿主提供。避免将这些表述扩展为已证实的主观体验或独立意识。命名与产品边界的完整评估见[产品定位诊断](archive/product-positioning-2026-11-07.md)。
 
 仓库位于 [BCOIgv/roleplay-recollection](https://github.com/BCOIgv/roleplay-recollection)。包的实际发布状态见 [发布清单](releasing.md)；历史名称搜索结果不能作为名称权利或商标结论。

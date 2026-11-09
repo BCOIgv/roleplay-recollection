@@ -2,7 +2,7 @@
 
 # API 参考
 
-> 本页说明局部核心接口，并标注公开 0.3.0 与当前源码的已知差异。当前源码为纯 ESM，要求 Node.js ≥ 22.16，无运行时第三方依赖。
+> 本页说明当前源码的局部核心接口。公开 v0.3.0 的差异见[历史验证记录](archive/verification-2026-11-07.md)。当前源码为纯 ESM，要求 Node.js ≥ 22.16，无运行时第三方依赖。
 > 类型定义见仓库根目录 [index.d.ts](../index.d.ts)。
 
 ## 1. 导入
@@ -13,7 +13,7 @@ import {CompanionMemory, memoryView, DEFAULTS, VERSION} from 'roleplay-recollect
 
 | 导出 | 说明 |
 | --- | --- |
-| `CompanionMemory` | 核心类；所有业务入口都在这里 |
+| `CompanionMemory` | 局部经历核心；外部来源使用 GlobalMemoryLibrary / GlobalRecollection |
 | `memoryView` | 低级投影函数；通常不需要直接调用 |
 | `DEFAULTS` | 默认配置的冻结副本 |
 | `VERSION` | 运行时版本，必须与 `package.json` 一致 |
@@ -56,7 +56,7 @@ const memory = new CompanionMemory({
 | `dormantThreshold` | 0.15 | 0–1 | 低于此值不参与日常候选 |
 | `dailyModelCalls` | 2 | 1–8 | 每日模型调用上限；线索与独处共享 |
 | `modelTimeoutMs` | 30000 | 50–60000 | 单次模型调用超时 |
-| `maxOutputTokens` | 500 | 64–800 | 单次模型输出上限 |
+| `maxOutputTokens` | 500 | 64–800 | 传给宿主模型钩子的输出 token 上限请求；实际 API 参数由宿主执行 |
 | `expressionIntervalHours` | 48 | 1–168 | 线索表达按提出时间计冷却；独处联系按回执计冷却 |
 | `sameMemoryExpressionDays` | 7 | 1–60 | 同一段旧事重复作为开场的间隔 |
 | `maxEpisodes` | 200 | 1–500 | 经历容量 |
@@ -72,7 +72,7 @@ const memory = new CompanionMemory({
 | `solitudeMinutes` | 10 | 1–10 | 单次独处时限 |
 | `unansweredContactHours` | 72 | 1–336 | 未回应时的联系冷却 |
 
-配置在构造时校验并冻结；非法值会抛出 `Error`。计数及小时/分钟等整数参数不接受小数；必须满足 `0 < dormantThreshold < detailThreshold < 1`。0.3.0 的构造参数 `storyId` 必须省略或为字符串，当前源码将显式 `null` 规范化为缺省值；公开 0.3.0 仍存在该差异。
+配置在构造时校验并冻结；非法值会抛出 `Error`。计数及小时/分钟等整数参数不接受小数；必须满足 `0 < dormantThreshold < detailThreshold < 1`。当前源码将 `storyId:null` 规范化为缺省值；TypeScript 构造类型仍要求省略或字符串。剧情模式必须提供非空故事 ID。
 
 ## 3. 模型钩子
 
@@ -136,7 +136,7 @@ const result = memory.capture({
 | --- | --- |
 | `stored` | 是否入库 |
 | `id` / `revision` | 入库或重复时的经历标识 |
-| `duplicate` | 同一 ID 或同一 `sourceKey` 已存在 |
+| `duplicate` | 同一 ID、相同证据组或稳定来源身份重叠 |
 | `reason` | `task_mode` / `low_salience` / `same_source` / `withdrawn_source` / `withdrawn_id` |
 
 规则：
@@ -149,7 +149,7 @@ const result = memory.capture({
   - 剧情：`story_event`
 - `tags` 最多 8 个；`importance` / `emotionalWeight` 为 0–1。
 - `retention: 'explicitly_retained'` 可跳过显著性过滤，需提供 `retentionReason`。
-- `sourceKey` 对整组证据的 kind/id/text 排序后哈希；仅完整证据组相同才按同一来源处理。增减证据或修改摘录可绕过去重，宿主应维护稳定来源身份。
+- `sourceKey` 是整组证据 kind/id/text 的排序哈希；新记录另保存由 kind/id 生成的 `sourceIds`。捕获时，相同证据组或任一稳定来源身份重叠都会拒绝重复入库。旧状态若缺少 `sourceIds`，仍仅依赖已有字段；宿主需保持来源 ID 稳定。
 
 ### `revise(id, expectedRevision, raw)`
 
@@ -158,16 +158,16 @@ const revised = memory.revise('rain-and-whale', currentRevision, {...raw, gist: 
 ```
 
 - 必须带当前 `revision`；不匹配会抛错。
-- 修订会清除该经历关联的私人想法和表达候选，并中止正在进行的回想。
+- 修订会清除关联想法及未取用候选，并中止正在进行的回想。已取用/投递未知的独处联系保留结算字段、擦除文本。修订时与其他经历的冲突检查使用 `sourceKey`，不同于捕获时的 `sourceIds` 重叠检查。
 - 返回 `{revised: true, id, revision}`。
 
 ### `forget(id)`
 
-撤回一段经历：状态改为 `withdrawn`，删除关联想法/表达；返回 `{forgotten, id?}`。撤回后保留 ID、revision、sourceKey 墓碑。同一 ID 不能重新入库，完整证据组哈希相同才会被识别为 `withdrawn_source`；墓碑仍占用经历容量。
+撤回一段经历：状态改为 `withdrawn`，删除关联想法及未取用表达；返回 `{forgotten, id?}`。墓碑保留 ID、revision、sourceKey、sourceIds，仍占容量。同一 ID、相同证据组或已保存的稳定来源身份重叠均不能重新入库。已取用/投递未知的独处联系擦除正文并保留结算字段。
 
 ### `setSourceAvailable(id, available)`
 
-标记原始来源是否仍可访问。`available: false` 时该经历不再参与回想，关联想法/表达被清除；恢复 `true` 后可再次参与。
+标记原始来源是否仍可访问。`available: false` 时该经历不再参与回想，关联想法和未取用表达被清除；已取用/投递未知的独处联系擦除正文并保留账本。恢复 `true` 后经历可再次参与，但已清除的派生内容不会恢复。
 
 ### `pause(value = true)`
 
@@ -190,7 +190,7 @@ const materials = memory.visible({
 
 ### `privateThoughts(context)`
 
-返回最近最多 3 条仍与当前可见 detail 匹配的私人想法；每条带 `status:'tentative_character_thought'` 和 `usableAsEvidence:false`。零模型调用。
+返回最近最多 3 条仍与当前可见 revision/detail 匹配的私人想法；不会自动注入后续漫游或回复。每条带 `status:'tentative_character_thought'` 和 `usableAsEvidence:false`。零模型调用。
 
 ### `recollect(context, {signal})`
 
@@ -206,9 +206,9 @@ const result = await memory.recollect({
 ```
 
 - `trigger:'cue'`：一次线索回想，最多 1 次模型调用。
-- `trigger:'idle'`：转到 `solitude()`，返回 `SolitudeResult`。0.3.0 的类型声明遗漏此分支。
+- `trigger:'idle'`：转到 `solitude()`，返回 `SolitudeResult`，当前类型声明已覆盖。
 - cue 路径的 `opportunityId` 必填；去重依赖最近保留的运行记录，并非永久 ID 注册表。idle 路径使用独处计划，不要求此字段。
-- `busy` / `userAwaitingReply` 时返回 `skipped`。
+- `busy` / `userAwaitingReply` / `hasPendingWork` 时返回 `skipped`。
 - 未配置 `reflect` 时返回 `{status:'recalled', memory, expression:null, modelCalls:0}`。
 - 返回值可能是：
   - `{status:'skipped', reason, modelCalls:0}`
@@ -253,7 +253,7 @@ memory.settleExpression(id, {outcome: 'sent', receipt: 'platform-message-123'});
 | `not_sent` | 确认未发送 |
 | `unknown` | 结果未知；不重发，阻止新的主动投递，待核实 |
 
-返回 `{id, status, sent?}`。同一 outcome 和 receipt 重复结算幂等。当前来源修订、撤回或失效会删除未决意愿，导致晚到回执无法结算；宿主需保留独立投递记录。
+返回 `{id, status, sent?}`。同一 outcome 和 receipt 重复结算幂等。来源修订、撤回或失效会擦除未决联系正文，但保留 `taken` / `unknown` 的结算记录，支持晚到回执。宿主负责核实实际投递结果。
 
 ### `close()`
 
@@ -315,18 +315,18 @@ memory.settleExpression(id, {outcome: 'sent', receipt: 'platform-message-123'});
 - **输入错误**：`capture` / `revise` 的字段、证据类型、时间、容量问题会抛 `Error`。
 - **模型错误**：`recollect` 以 `{status:'failed', reason}` 返回，不向调用方抛异常（除非上下文参数本身非法）。
 - **可预期的“不做”**：多数跳过/不满足条件用返回值（`skipped` 或 `null`）表达，不用异常做流程控制。
-- **取消**：传入 `AbortSignal` 或调用 `close()`，返回 `interrupted`；晚到结果不会提交。
+- **取消**：传入 `AbortSignal` 或调用 `close()`；线索回想可返回 `interrupted`，局部独处可返回 `solitude_ended` 并带中断原因。晚到结果不会提交。
 
 ## 7. 持久化
 
 - 传入 `stateDir` 后，状态写入 `<stateDir>/memory-state.json`。
 - 状态版本 2；兼容 0.2.0 的经历、想法和调用计数，首次加入独处计划。
 - 写入使用临时文件 + `rename`；写入上限 2.5 MiB，读取上限 3 MiB。创建时请求 POSIX 文件权限 `0600`、目录 `0700`；已有目录及 Windows ACL 由宿主配置。
-- `memory-writer.lock` 检查 PID，但创建锁到写入 PID 存在竞争窗口；0.3.0 不应依赖多进程写入安全。
+- 写锁使用 guard 串行化建立/回收，未知空锁不会被抢；释放时核对文件身份。guard 异常遗留时保守停止，需确认所有写入者停止后人工恢复。不同版本不要混写同一状态目录。
 - 淡化只影响可见视图，不自动删除磁盘原文；撤回会移除对应文本并保留去重墓碑。
-- 核心不访问网络，也不写任何其他位置。
+- 局部核心在自己的状态目录内写状态、锁和临时文件，不直接访问网络；宿主模型钩子的网络行为由宿主负责。
 
-可运行示例见 [`examples/`](../examples/)。
+可运行示例见 [`examples/`](../examples)。
 
 ## 8. 版本与兼容
 

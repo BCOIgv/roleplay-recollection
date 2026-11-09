@@ -44,11 +44,12 @@ available. This is a small volunteer project; no bounty program is implied.
 
 - Do not commit `memory-state.json`, `.env`, API keys, or real chat logs.
 - Error messages are redacted for `sk-...`-style secrets before being written to run records.
-- The writer lock checks a stored PID, but 0.3.0 can reclaim a live lock before its PID has
-  been written. Use one writer process per state directory until that race is fixed.
-- An `unknown` solitude delivery blocks new proactive contact while its record exists.
-  In 0.3.0, source revision or withdrawal removes that record even if delivery is unresolved.
-  Keep an independent host delivery ledger until this is fixed.
+- Current source serializes writer-lock creation/reclamation with a guard, refuses unknown
+  lock owners, and retains taken/unknown delivery bookkeeping after source changes.
+- Historical public v0.3.0 lacks these fixes. See the [release-era record](docs/archive/verification-2026-11-07.md).
+- The evaluation runners contact a configured provider only in live mode. Generated
+  prompts, replies and runtime state are excluded from Git and npm packages. Review
+  synthetic inputs before sharing them; a synthetic label is not a privacy detector.
 
 ## Unreleased source protections
 

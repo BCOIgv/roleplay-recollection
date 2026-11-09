@@ -31,11 +31,16 @@ development dependencies. Avoid adding runtime dependencies unless discussed fir
 ## Project layout
 
 ```text
-src/        core implementation (ESM)
-test/       node:test suites
-examples/   runnable, offline demos
-docs/       architecture, solitude, API, naming, verification, release notes
-scripts/    check, verify, release-check, configure-repo
+src/                  core implementation (ESM)
+dsh/                  host adapter
+test/, typecheck/     regression and consumer type checks
+examples/             runnable offline demos
+evaluation/           scripted probes and synthetic model runners
+evaluation/results/   reviewed public aggregates
+evaluation/reports/   ignored local output; excluded from npm
+docs/                 current APIs, integration and study protocols
+docs/archive/         historical diagnostics and verification
+scripts/              syntax, package, install and release checks
 ```
 
 ## Style

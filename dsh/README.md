@@ -22,7 +22,7 @@ runtime limits or enable real-model experiments.
 
 Current source enables global mode when `sources` is configured or the host provides `ctx.recollection.listMemorySources()`. Otherwise it uses local mode. A sources array alone is insufficient: global mode also requires the trusted services described below.
 
-Real DSH service bridging and production delivery still need separate validation. Installed tarball and mock-host checks are documented in [verification notes](../docs/verification.md).
+The timeline evaluation host explicitly injects thoughts and anchored source text into replies. This is not installed as a default DSH reply hook. Real DSH service bridging and production delivery still need separate validation. Installed tarball and mock-host checks are documented in [verification notes](../docs/verification.md).
 
 ## Install both packages
 

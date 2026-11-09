@@ -1,11 +1,56 @@
-# Evaluation preparation
+# Evaluation tools
 
-This directory supports the [independent-value study plan](../docs/evaluation-plan.md)
-and the [wandering-boundary review](../docs/wandering-boundaries.md).
+These scripts exercise the current core and experimental hosts. They are not a production scheduler or message transport. Public fixtures are synthetic. Private materials, identity maps and outputs belong outside the repository.
 
-Status: scripted offline conditions are implemented; no live experiment arm has started.
-No provider adapter, user-study runner, production scheduler, or message sender is
-included here. Private materials and outputs must remain outside this repository.
+## Entry points and storage
+
+| Files | Purpose |
+| --- | --- |
+| `offline-boundaries.mjs` | 22 scripted local/global boundary probes |
+| `condition-host.mjs`, `offline-conditions.mjs`, `check-conditions.mjs` | Scripted A/B/C/C0/B+T adaptation and isolation checks |
+| `batch-scenarios.mjs`, `run-batch.mjs` | Six synthetic single-opportunity live/dry-run scenes |
+| `timeline-scenarios.mjs`, `timeline-host.mjs`, `run-timeline.mjs` | Three synthetic multi-session timelines, three sessions and three turns per session |
+| `audit-results.mjs`, `results/` | Aggregate frozen synthetic reports and store reviewed public summaries |
+| `templates/` | Recording formats for future studies; not completed ratings |
+| `reports/` | Generated prompts, responses and per-condition state; Git/npm excluded |
+
+`latest-report.*` and `latest-timeline-report.*` are overwritten by either mode. Fixed raw JSON lives in `reports/runs/<run-id>/report.json`; preserve it before reviewing a result. Historical successful and failed batches are summarized in [results/README.md](results/README.md).
+
+## Synthetic dry-run and live runners
+
+```bash
+node evaluation/run-batch.mjs --dry-run
+node evaluation/run-timeline.mjs --dry-run
+```
+
+Dry-run calls scripted hooks only and writes complete assembled messages to JSON. Markdown provides a readable summary. No credentials or network are required. Both public runners reject inputs not marked `data_origin: synthetic` before any API call. This label is a guard, not a detector of personal information; review fixtures before publication.
+
+For a separately scoped live run, inject `OPENAI_API_KEY`, `OPENAI_BASE_URL` and `EVAL_MODEL` into the process, then choose one runner:
+
+```bash
+node evaluation/run-batch.mjs --live
+node evaluation/run-timeline.mjs --live
+```
+
+The client uses native fetch with an OpenAI-compatible chat completions endpoint. It records content, provider usage, latency, finish reason and model label. No pricing or user feedback is inferred. Unknown usage remains null. Failed requests/conditions are retained and produce a nonzero exit; a valid API response can still fail the core's decision validation.
+
+The single-opportunity runner forwards the core's token request. Timeline runner-v2 explicitly uses an experimental API allowance of **2000 tokens** (at least the hook request), records both requested_max_tokens and actual max_tokens, and performs **no automatic retries**. This does not change the core default of 500 or its allowed range of 64–800. It also records implementation hashes and timeline snapshots and persists before/after transport calls. Legacy reports did not preserve all this information; see the results limitations.
+
+## Experimental timeline conditions
+
+| Condition | Idle path | Reply input |
+| --- | --- | --- |
+| A | No idle call | Experimental lexical/recency Top-5 plus conversation history |
+| B | One prompt over two surface memories | Same passive retrieval; candidate omitted by default |
+| C | GlobalRecollection with host-selected pool and continuation hints | Passive retrieval plus experimental tentative-thought ledger |
+| C0 | Reuses paired C idle artifacts without new idle calls | Thoughts masked; generates its own rolling replies |
+| B+T | One prompt with optional thought | Passive retrieval plus its thought ledger |
+
+Current timeline host is `llm-timeline-host-v2`; the scripted helper version is `scripted-timeline-host-v2`. Thoughts and their anchored source text are host-managed experimental context, not new facts. The host exports only thoughts accepted by the core and checks that the source text is still visible before reply injection. This ledger differs from the core's public `privateThoughts()` return of at most three items. It does not automatically feed earlier thoughts into the next wandering step.
+
+The host deliberately arranges surface/bridge material and primes a controlled clock, including synthetic opportunity-expiry checks for long gaps. It does not reconstruct real historical eligibility. C's prompt encourages first-step follow; global follow itself has no semantic association selector. B/B+T have different gating and idle-context inputs. These conditions are mechanism probes, not a material- and budget-matched superiority study.
+
+`--proactive-open` adds the candidate to simulated conversation context and the first reply input. It still sends nothing and does not simulate a recipient's response. The recorded live batches used the default `false` value. All candidates remain not_sent.
 
 ## Run the offline boundary probes
 
@@ -40,7 +85,7 @@ budgets and hard limits.
 The host uses the real read-only JSONL library and public global runtime for schema,
 authorization, candidate validation, and settlement. B uses a single cue invocation
 with a frozen one-shot prompt identifier; this is a flow adapter, not a completed live
-baseline prompt study. All model responses remain scripted. C0 reuses C's artifact
+baseline prompt study. All responses in this offline adapter remain scripted; the separate live runners above call models. C0 reuses C's artifact
 without a second model invocation and gets an independent output/state directory.
 
 Host version `scripted-condition-host-v1` explicitly places valid tentative thoughts in
@@ -92,8 +137,7 @@ Templates and this script do not enable or authorize later stages.
 | `private_payload_ref`, `protocol_error` | Controlled local artifact reference and validation error if any |
 
 Candidate, take, settlement, reply-generation and user-feedback events are future host
-records, not telemetry currently exported by the core. For an actual model stage, log
-every attempt including failures, cancellations and retries. Core call counters and a
+records, not telemetry currently exported by the core. Live reports record calls and failures; future studies must also record every transport attempt, cancellation and retry. Core call counters and a
 provider bill are different data sources.
 
 ## Rating dictionary

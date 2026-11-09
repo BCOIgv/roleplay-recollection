@@ -1,8 +1,10 @@
+> 历史归档：保留当时的诊断与验证边界，不描述当前源码。当前接口见[API](../api.md)，当前检查与实验见[验证说明](../verification.md)。
+
 # GitHub 文档与可发现性诊断
 
-2026-11-07 更新：定位与展示名以[命名规范](naming.md)为准。新增[漫游边界研究](wandering-boundaries.md)及[分阶段测试计划](evaluation-plan.md)，均明确区分已实现能力、未实施设计与待验证假设。以下线上元数据观察保留原检查日期。
+2026-11-07 更新：定位与展示名以[命名规范](../naming.md)为准。新增[漫游边界研究](../wandering-boundaries.md)及[分阶段测试计划](../evaluation-plan.md)，均明确区分已实现能力、未实施设计与待验证假设。以下线上元数据观察保留原检查日期。
 
-诊断日期：2026-11-06（Asia/Shanghai）。基线：`65ef240`。检查范围包括公开仓库元数据、中英文 README、DSH 接入、安装入口、示例与当前代码契约。本文已按“角色回忆行为层”修正定位；方向、需求与生态重叠的完整论证见[产品定位诊断](product-positioning.md)。
+诊断日期：2026-11-06（Asia/Shanghai）。基线：`65ef240`。检查范围包括公开仓库元数据、中英文 README、DSH 接入、安装入口、示例与当前代码契约。本文已按“角色回忆行为层”修正定位；方向、需求与生态重叠的完整论证见[产品定位诊断](product-positioning-2026-11-07.md)。
 
 ## 主要结论
 
@@ -124,7 +126,7 @@ user:BCOIgv mind-wandering in:readme
 
 ## 交付与验证范围
 
-完整可替换文档位于 [中文 README](../README.md) 和 [English README](../README.en.md)。支持入口同步更新了 [DSH README](../dsh/README.md)、[贡献指南](../CONTRIBUTING.md) 和 [API 环境说明](api.md)。
+完整可替换文档位于 [中文 README](../../README.md) 和 [English README](../../README.en.md)。支持入口同步更新了 [DSH README](../../dsh/README.md)、[贡献指南](../../CONTRIBUTING.md) 和 [API 环境说明](../api.md)。
 
 本次修改包含离线示例线索修正，不改变检索算法。文档中的模型生成、投递、权限及平台适配均按当前代码边界描述。
 

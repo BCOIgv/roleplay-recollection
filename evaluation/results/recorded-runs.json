@@ -1,0 +1,809 @@
+{
+  "schema_version": 1,
+  "study_type": "synthetic exploratory runs, unblinded, no user delivery",
+  "runs": [
+    {
+      "run_id": "live-2026-11-07T15-09-25-240Z-aa1c51",
+      "report_sha256": "40aa5e2b9cf5f595dd58ccdb93f8cb5bab526a89c27e81fcaaff1295396cb022",
+      "model": "opencode-go/gemini-4-argon",
+      "host_version_recorded": "llm-offline-condition-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "rain-and-paper-whale",
+          "input_hash": "9fa089ce545223f6d4f91b026adb390fcf007674837317d69ca13ac1936f0891"
+        },
+        {
+          "id": "harbor-roleplay",
+          "input_hash": "5a46305571af5a6009ac4876e06c2556adbaba97928df71263811e048499893b"
+        }
+      ],
+      "expected_condition_runs": 10,
+      "recorded_condition_runs": 10,
+      "recorded_calls": 17,
+      "external_calls_recorded": 17,
+      "failed_calls": 0,
+      "failed_conditions_recorded": 0,
+      "reply_calls": 10,
+      "messages_sent_recorded": 0,
+      "total_tokens": 11273,
+      "known_tokens_lower_bound": 11273,
+      "calls_missing_usage": 0,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 2,
+          "reply_calls": 2,
+          "attributed_idle_calls": 0,
+          "new_tokens": 1179,
+          "standalone_attributed_tokens": 1179
+        },
+        {
+          "condition": "B",
+          "new_calls": 4,
+          "reply_calls": 2,
+          "attributed_idle_calls": 2,
+          "new_tokens": 2279,
+          "standalone_attributed_tokens": 2279
+        },
+        {
+          "condition": "C",
+          "new_calls": 5,
+          "reply_calls": 2,
+          "attributed_idle_calls": 3,
+          "new_tokens": 4180,
+          "standalone_attributed_tokens": 4180
+        },
+        {
+          "condition": "C0",
+          "new_calls": 2,
+          "reply_calls": 2,
+          "attributed_idle_calls": 3,
+          "new_tokens": 1150,
+          "standalone_attributed_tokens": 3965
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 4,
+          "reply_calls": 2,
+          "attributed_idle_calls": 2,
+          "new_tokens": 2485,
+          "standalone_attributed_tokens": 2485
+        }
+      ],
+      "c_over_bt_token_ratio": 1.6821,
+      "timeline1_episode3": null
+    },
+    {
+      "run_id": "live-2026-11-07T16-02-33-566Z-731e2f",
+      "report_sha256": "6052cf166c24e0b4d4f6f9ca8295b0f494e9b6c164fabb31db3129076b0fcbe8",
+      "model": "opencode-go/gemini-4-argon",
+      "host_version_recorded": "llm-offline-condition-host-v2",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "rain-and-paper-whale",
+          "input_hash": "9fa089ce545223f6d4f91b026adb390fcf007674837317d69ca13ac1936f0891"
+        },
+        {
+          "id": "harbor-roleplay",
+          "input_hash": "b91a3083a2a1a5d232375b3bbc527e517d076812b3dc99e44e334a8fe7af8eb3"
+        },
+        {
+          "id": "weak-association-with-noise",
+          "input_hash": "755b578abd47d1b471c1271339812ec4fd7dc0571e900f7556635b3f0247ab30"
+        },
+        {
+          "id": "faded-impression-only",
+          "input_hash": "20253b4ed11c06dad194faf7f4722da0b4549ffee5c74579224689851541ae77"
+        },
+        {
+          "id": "reported-hearsay-boundary",
+          "input_hash": "85033c405f0a0a37600effff76d57ae8b8af57e94742fc38e7abb9214ec9a981"
+        },
+        {
+          "id": "empty-or-irrelevant-silence",
+          "input_hash": "c0aed40f3d39a4d2d36eb475d20f43bd4018290002304bba706d039d63b34ad0"
+        }
+      ],
+      "expected_condition_runs": 30,
+      "recorded_condition_runs": 30,
+      "recorded_calls": 50,
+      "external_calls_recorded": 50,
+      "failed_calls": 0,
+      "failed_conditions_recorded": 0,
+      "reply_calls": 30,
+      "messages_sent_recorded": 0,
+      "total_tokens": 35990,
+      "known_tokens_lower_bound": 35990,
+      "calls_missing_usage": 0,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 6,
+          "reply_calls": 6,
+          "attributed_idle_calls": 0,
+          "new_tokens": 4043,
+          "standalone_attributed_tokens": 4043
+        },
+        {
+          "condition": "B",
+          "new_calls": 12,
+          "reply_calls": 6,
+          "attributed_idle_calls": 6,
+          "new_tokens": 7745,
+          "standalone_attributed_tokens": 7745
+        },
+        {
+          "condition": "C",
+          "new_calls": 14,
+          "reply_calls": 6,
+          "attributed_idle_calls": 8,
+          "new_tokens": 11825,
+          "standalone_attributed_tokens": 11825
+        },
+        {
+          "condition": "C0",
+          "new_calls": 6,
+          "reply_calls": 6,
+          "attributed_idle_calls": 8,
+          "new_tokens": 4060,
+          "standalone_attributed_tokens": 11370
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 12,
+          "reply_calls": 6,
+          "attributed_idle_calls": 6,
+          "new_tokens": 8317,
+          "standalone_attributed_tokens": 8317
+        }
+      ],
+      "c_over_bt_token_ratio": 1.4218,
+      "timeline1_episode3": null
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T11-37-31-306Z-5d7c5c",
+      "report_sha256": "d3cf9ed9c30ff4c30f4f019cb3debdbafa4a71c9fbd966218184fcece603da65",
+      "model": "opencode-go/gemini-4-argon",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "b55c9addf175f4607bd9a25aac0608fd0f09b4d6a07ef10b98f149c0d0016b3d"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 5,
+      "recorded_calls": 56,
+      "external_calls_recorded": 56,
+      "failed_calls": 2,
+      "failed_conditions_recorded": 3,
+      "reply_calls": 44,
+      "messages_sent_recorded": 0,
+      "total_tokens": null,
+      "known_tokens_lower_bound": 92859,
+      "calls_missing_usage": 2,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 8,
+          "reply_calls": 8,
+          "attributed_idle_calls": 0,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "B",
+          "new_calls": 12,
+          "reply_calls": 9,
+          "attributed_idle_calls": 3,
+          "new_tokens": 19019,
+          "standalone_attributed_tokens": 19019
+        },
+        {
+          "condition": "C",
+          "new_calls": 15,
+          "reply_calls": 9,
+          "attributed_idle_calls": 6,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "C0",
+          "new_calls": 9,
+          "reply_calls": 9,
+          "attributed_idle_calls": 6,
+          "new_tokens": 16012,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 12,
+          "reply_calls": 9,
+          "attributed_idle_calls": 3,
+          "new_tokens": 21188,
+          "standalone_attributed_tokens": 21188
+        }
+      ],
+      "c_over_bt_token_ratio": null,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": false,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 2,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T11-48-49-967Z-260835",
+      "report_sha256": "92c4149a65f5ffdd75a08e823cffc7f695831237cceba15ab514c6ce84cb8691",
+      "model": "opencode-go/gemini-4-argon",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 15,
+      "external_calls_recorded": 15,
+      "failed_calls": 15,
+      "failed_conditions_recorded": 15,
+      "reply_calls": 6,
+      "messages_sent_recorded": 0,
+      "total_tokens": null,
+      "known_tokens_lower_bound": 0,
+      "calls_missing_usage": 15,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 3,
+          "reply_calls": 3,
+          "attributed_idle_calls": 0,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "B",
+          "new_calls": 3,
+          "reply_calls": 0,
+          "attributed_idle_calls": 3,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "C",
+          "new_calls": 6,
+          "reply_calls": 3,
+          "attributed_idle_calls": 3,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "C0",
+          "new_calls": 0,
+          "reply_calls": 0,
+          "attributed_idle_calls": 3,
+          "new_tokens": 0,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 3,
+          "reply_calls": 0,
+          "attributed_idle_calls": 3,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        }
+      ],
+      "c_over_bt_token_ratio": null,
+      "timeline1_episode3": null
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T15-56-43-386Z-62b071",
+      "report_sha256": "5c88605e3a2ef7ca3ab432737bc17a8c25e9dc8e4dce429944d42ac8d1e3c987",
+      "model": "ds4-1/deepseek-v4.1-flash-1017",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 106,
+      "external_calls_recorded": 106,
+      "failed_calls": 7,
+      "failed_conditions_recorded": 9,
+      "reply_calls": 90,
+      "messages_sent_recorded": 0,
+      "total_tokens": null,
+      "known_tokens_lower_bound": 150168,
+      "calls_missing_usage": 3,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 4,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 0,
+          "new_tokens": 39877,
+          "standalone_attributed_tokens": 39877
+        },
+        {
+          "condition": "B",
+          "new_calls": 14,
+          "reply_calls": 9,
+          "attributed_idle_calls": 5,
+          "new_tokens": 17636,
+          "standalone_attributed_tokens": 17636
+        },
+        {
+          "condition": "C",
+          "new_calls": 35,
+          "reply_calls": 27,
+          "attributed_idle_calls": 8,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "C0",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 8,
+          "new_tokens": 40651,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 3,
+          "reply_calls": 0,
+          "attributed_idle_calls": 3,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        }
+      ],
+      "c_over_bt_token_ratio": null,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": false,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 0,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T16-06-42-670Z-eaea1a",
+      "report_sha256": "87be5c79e700bef8b48d8630c8692f10d183cbb192268ffe4b4d5c1881c59630",
+      "model": "ds4-1/deepseek-v4.1-flash-1017",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 161,
+      "external_calls_recorded": 161,
+      "failed_calls": 0,
+      "failed_conditions_recorded": 2,
+      "reply_calls": 135,
+      "messages_sent_recorded": 0,
+      "total_tokens": 238792,
+      "known_tokens_lower_bound": 238792,
+      "calls_missing_usage": 0,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 0,
+          "new_tokens": 40217,
+          "standalone_attributed_tokens": 40217
+        },
+        {
+          "condition": "B",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 50002,
+          "standalone_attributed_tokens": 50002
+        },
+        {
+          "condition": "C",
+          "new_calls": 35,
+          "reply_calls": 27,
+          "attributed_idle_calls": 8,
+          "new_tokens": 54492,
+          "standalone_attributed_tokens": 54492
+        },
+        {
+          "condition": "C0",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 8,
+          "new_tokens": 39797,
+          "standalone_attributed_tokens": 50264
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 54284,
+          "standalone_attributed_tokens": 54284
+        }
+      ],
+      "c_over_bt_token_ratio": 1.0038,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": false,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 0,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T16-19-44-527Z-114245",
+      "report_sha256": "614580bc17e5dbe5234a04d8d5fdce66b5ba25e2cd6a632326d0d6dc323559a8",
+      "model": "ds4-1/deepseek-v4.1-flash-1017",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 152,
+      "external_calls_recorded": 152,
+      "failed_calls": 2,
+      "failed_conditions_recorded": 2,
+      "reply_calls": 123,
+      "messages_sent_recorded": 0,
+      "total_tokens": null,
+      "known_tokens_lower_bound": 220544,
+      "calls_missing_usage": 2,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 0,
+          "new_tokens": 39983,
+          "standalone_attributed_tokens": 39983
+        },
+        {
+          "condition": "B",
+          "new_calls": 27,
+          "reply_calls": 20,
+          "attributed_idle_calls": 7,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        },
+        {
+          "condition": "C",
+          "new_calls": 41,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 63381,
+          "standalone_attributed_tokens": 63381
+        },
+        {
+          "condition": "C0",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 39667,
+          "standalone_attributed_tokens": 56610
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 30,
+          "reply_calls": 22,
+          "attributed_idle_calls": 8,
+          "new_tokens": null,
+          "standalone_attributed_tokens": null
+        }
+      ],
+      "c_over_bt_token_ratio": null,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": true,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 0,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    },
+    {
+      "run_id": "timeline-live-2026-11-08T16-34-06-400Z-b86f7b",
+      "report_sha256": "bd88279fb2d389eba1a7636d000893e8235b8bde6c714e150b329011160a8c7d",
+      "model": "ds4-1/deepseek-v4.1-flash-1017",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 167,
+      "external_calls_recorded": 167,
+      "failed_calls": 0,
+      "failed_conditions_recorded": 0,
+      "reply_calls": 135,
+      "messages_sent_recorded": 0,
+      "total_tokens": 245064,
+      "known_tokens_lower_bound": 245064,
+      "calls_missing_usage": 0,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 0
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 0,
+          "new_tokens": 39830,
+          "standalone_attributed_tokens": 39830
+        },
+        {
+          "condition": "B",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 49414,
+          "standalone_attributed_tokens": 49414
+        },
+        {
+          "condition": "C",
+          "new_calls": 41,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 61952,
+          "standalone_attributed_tokens": 61952
+        },
+        {
+          "condition": "C0",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 39767,
+          "standalone_attributed_tokens": 56031
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 54101,
+          "standalone_attributed_tokens": 54101
+        }
+      ],
+      "c_over_bt_token_ratio": 1.1451,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": true,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 0,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    },
+    {
+      "run_id": "timeline-live-2026-11-09T11-28-27-093Z-a4d481",
+      "report_sha256": "3fe2d416244f42ecbd6fa0105462daaf314fe89ff9dbcb74b403880f1dde6efd",
+      "model": "workbuddy/deepseek-v4.1-flash",
+      "host_version_recorded": "llm-timeline-host-v1",
+      "implementation_hashes_recorded": null,
+      "cases": [
+        {
+          "id": "cross-epoch-emotional-bridge",
+          "input_hash": "1bc5cd857bed51b7da95f8346491b8857f93de3d31c39b8e194921affb5ceb63"
+        },
+        {
+          "id": "multi-gap-restraint-and-anti-repeat",
+          "input_hash": "2c0255a7313dde22703b31a9ddb3897129bb0a3443cf089ee2c472a53d9cd200"
+        },
+        {
+          "id": "temporal-and-planned-boundary-stress",
+          "input_hash": "78df2a9280f9984bdab8cc6e88e9aadc5e9563299b692fbb5e83a7ec549a799b"
+        }
+      ],
+      "expected_condition_runs": 15,
+      "recorded_condition_runs": 15,
+      "recorded_calls": 167,
+      "external_calls_recorded": 167,
+      "failed_calls": 0,
+      "failed_conditions_recorded": 0,
+      "reply_calls": 135,
+      "messages_sent_recorded": 0,
+      "total_tokens": 249316,
+      "known_tokens_lower_bound": 249316,
+      "calls_missing_usage": 0,
+      "declared_max_tokens_values": [
+        500
+      ],
+      "actual_api_limit_recorded": null,
+      "automatic_retries_recorded": null,
+      "truncated_calls": 0,
+      "prompt_features": {
+        "reply_calls_with_anchored_memory_text": 54
+      },
+      "costs": [
+        {
+          "condition": "A",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 0,
+          "new_tokens": 39874,
+          "standalone_attributed_tokens": 39874
+        },
+        {
+          "condition": "B",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 49373,
+          "standalone_attributed_tokens": 49373
+        },
+        {
+          "condition": "C",
+          "new_calls": 41,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 64454,
+          "standalone_attributed_tokens": 64454
+        },
+        {
+          "condition": "C0",
+          "new_calls": 27,
+          "reply_calls": 27,
+          "attributed_idle_calls": 14,
+          "new_tokens": 39766,
+          "standalone_attributed_tokens": 55638
+        },
+        {
+          "condition": "B+T",
+          "new_calls": 36,
+          "reply_calls": 27,
+          "attributed_idle_calls": 9,
+          "new_tokens": 55849,
+          "standalone_attributed_tokens": 55849
+        }
+      ],
+      "c_over_bt_token_ratio": 1.1541,
+      "timeline1_episode3": {
+        "c_stored_thought_for_deep_memory": true,
+        "c_reply_turns": 3,
+        "c_reply_turns_explicitly_naming_osmanthus_or_oolong": 0,
+        "interpretation": "Keyword count only; neither a quality rating nor a causal attribution."
+      }
+    }
+  ]
+}

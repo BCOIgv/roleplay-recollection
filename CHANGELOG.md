@@ -8,6 +8,12 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Evaluation tooling
 
+- Add native-fetch single-opportunity and multi-session synthetic runners with A/B/C/C0/B+T conditions, dry-run prompt output, isolated state and provider usage records.
+- Audit frozen synthetic runs into public aggregate summaries; retain failed batches and distinguish prescribed bridge selection from core behavior and reply quality.
+- Version timeline host/runner v2, record actual transport token limits, implementation hashes and input snapshots; persist each attempt and remove unrecorded automatic retries.
+- Prevent runtime-rejected thoughts from entering the experimental reply ledger and recheck source visibility before injection. These fixes have offline coverage, not a new live result.
+- Refresh current API/architecture documentation and archive earlier diagnostics and verification. Explicitly exclude generated evaluation reports from npm packages.
+
 - Add a versioned scripted A/B/C/C0/B+T condition host using read-only sources,
   audience and availability filtering, isolated state, paired thought masking, and
   candidate settlement without sending. Keep private datasets and results external.
